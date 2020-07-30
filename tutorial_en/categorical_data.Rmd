@@ -1,9 +1,8 @@
 ---
-title: "Categorial data"
+title: Categorial data
 output: learnr::tutorial
 mathjax: local
 runtime: shiny_prerendered
-css: leaRn.css
 ---
 
 <style>
@@ -17,6 +16,7 @@ tutorial_options(
    exercise.completion = FALSE,
    exercise.diagnostics = FALSE,
    exercise.startover = TRUE)
+x <- c(1, 2, 4, 1, 3, 1, 1, 3, 1, 1, 2, 3, 2, 1, 1, 4, 1, 3, 3, 2, 1)
 ```
 
 ## Overview
@@ -104,14 +104,12 @@ In this section, it is assumed that you know the following R commands:
 If your are not familiar with these commands, you are advised to learn the concepts prior to beginning with the current section.
 
 
-
-
 ## Tabulating data
 
 First, we read in the data of all $n=21$ customers. 
 
 <div class = "input">
-```{r "exsetup"}
+```{r}
 x <- c(1, 2, 4, 1, 3, 1, 1, 3, 1, 1, 2, 3, 2, 1, 1, 4, 1, 3, 3, 2, 1)
 ```
 </div>
@@ -253,7 +251,7 @@ We can customized the `barplot`.
 
 Feel free to experiment with the commands `table` and `barplot`.
 
-```{r "barplot", exercise = TRUE, exercise.setup = "exsetup"}
+```{r "barplot", exercise = TRUE}
 table(x)
 ```
 
@@ -296,7 +294,7 @@ pie(table(x))
 
 
 ### Your turn 
-```{r pie, exercise = TRUE, exercise.setup = "exsetup"}
+```{r pie, exercise = TRUE}
 table(x)
 ```
 
