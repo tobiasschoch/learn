@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+   <!-- FHNW Styleguide CSS -->
+   <link rel="stylesheet" href="css/fhnw-1.1.0.min.css">
+
+   <title>leaRn</title>
+
+   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+   <script type="text/javascript" src="js/jquery-3.5.1.min.js"></script>
+   <script type="text/javascript" src="js/popper-1-14-7.min.js"></script>
+   <!-- TS: July 30, 2020: I tried popper v2, but cards cannot be opened... -->
+   <script type="text/javascript" src="js/bootstrap-4-5-0.min.js"></script>
+   <script type="text/javascript" src="js/javascript.util-0-12-12.min.js"></script>
+   <script type="text/javascript" src="js/select2-4-0-13.min.js"></script>
+   <script type="text/javascript" src="js/styleguide-customs.js"></script>
+
+   <script>
+      <!-- insert navbar -->
+      $(function(){
+      $("#nav-placeholder").load("navigation.html");
+      });
+
+      <!-- insert footer -->
+      $(function(){
+      $("#footer-placeholder").load("footerDE_EN.html");
+      });
+   </script>
+
+</head>
+
+<body>
+
+   <div id="nav-placeholder"></div>
+
+   <div class="jumbotron">
+      <h2 class="display-4">leaRn</h2>
+      <p class="lead">Online tutorial on the R statistical software</p>
+      <hr class="my-4">
+      <p>Sprache auswählen/ select language</p>
+      <a class="btn btn-secondary btn-lg" href="deutsch.html" role="button">Deutsch</a>
+      <a class="btn btn-secondary btn-lg" href="english.html" role="button">English</a>
+   </div>
+
+   <div id="footer-placeholder"></div>
+
+</body>
+</html>
