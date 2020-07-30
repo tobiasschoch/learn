@@ -1,0 +1,307 @@
+---
+title: "Categorial data"
+output: learnr::tutorial
+mathjax: local
+runtime: shiny_prerendered
+css: leaRn.css
+---
+
+<style>
+   div.input pre   { color:blue; }
+   div.input pre.r { color:red; }
+</style>
+
+```{r setup, include = FALSE}
+tutorial_options(
+   exercise.cap = "Code",
+   exercise.completion = FALSE,
+   exercise.diagnostics = FALSE,
+   exercise.startover = TRUE)
+```
+
+## Overview
+
+
+<div style = "background-color:#d6eaf8; padding:10px">
+<h4><b>Learning objectives</b></h4> 
+In this section, we learn techniques and methods to summarize categorical or count data (and plot them). The section covers the following commands:  
+
+* tabulate data using `table`
+* `factor`: equipping categorical variables with value labels
+* draw bar and pie charts using, respectively, `barplot` and `pie`
+
+</div>
+
+
+<div style = "background-color:#fef9e7; padding:10px"> 
+<h4><b>Case</b></h4>  
+
+In a small market research study, a sample $n=21$ was interviewed what product the like best. Here are the answers of the customers. 
+
+<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+   text-align: left;
+}
+th, td {
+  padding: 15px;
+}
+</style>
+<table>
+   <tr>
+   <td style = "background-color:LightGrey;">Answer</td>
+   <td>1</td>
+   <td>2</td>
+   <td>4</td>
+   <td>1</td>
+   <td>3</td>
+   <td>1</td>
+   <td>1</td>
+   <td>3</td>
+   <td>1</td>
+   <td>1</td>
+   <td>2</td>
+  </tr>
+</table> 
+<br>
+<i style = "font-size:12px;">[Table continued]</i>
+
+<table>
+   <tr>
+   <td>3</td>
+   <td>2</td>
+   <td>1</td>
+   <td>1</td>
+   <td>4</td>
+   <td>1</td>
+   <td>3</td>
+   <td>3</td>
+   <td>2</td>
+   <td>1</td>
+  </tr>
+</table> 
+
+<br>
+
+where the numerical codes 
+
+* 1 = black
+* 2 = white
+* 3 = silver
+* 4 = red
+
+In what follows, we are going to work with these sample data.
+</div>
+
+
+<h4><b>Prerequisites</b></h4>
+In this section, it is assumed that you know the following R commands: 
+
+* `c()` (see Section X) 
+* dd (see Section Y)
+
+If your are not familiar with these commands, you are advised to learn the concepts prior to beginning with the current section.
+
+
+
+
+## Tabulating data
+
+First, we read in the data of all $n=21$ customers. 
+
+<div class = "input">
+```{r "exsetup"}
+x <- c(1, 2, 4, 1, 3, 1, 1, 3, 1, 1, 2, 3, 2, 1, 1, 4, 1, 3, 3, 2, 1)
+```
+</div>
+
+We obtain the frequency distribution of variable `x` with the command `table`
+
+<div class = "input">
+```{r, comment =""}
+table(x)
+```
+</div>
+
+The frequency distributions tells us that ten individuals like color 1 (black), four persons favor color 2 (white), and so on.  
+
+
+### Factors
+
+Generate a new variable
+
+<div class = "input">
+```{r}
+x_factor <- factor(x, 
+  levels = c(1, 2, 3, 4), 
+  labels = c("black", "white", "silver", "red")) 
+```
+</div>
+
+The above call is equivalent writing everything on one single line, i.e., 
+
+<div class = "input">
+```{r, eval = FALSE}
+x_factor <- factor(x, levels = c(1, 2, 3, 4), labels = c("black", "white", "silver", "red")) 
+```
+</div>
+
+However, the first call is more structured and thus easier to read. The command `factor` takes the three inputs
+
+* `x`: the variable that shall be equipped with value labels,
+* `levels`: the numerical codes,
+* `labels`: the labels that correspond to the numerical codes
+
+The order of the numerical codes in `levels` must correspond with the ordering of the `labels`. Before we continue with our analysis, we print the new variable `x_factor`,
+
+<div class = "input">
+```{r, comment = ""}
+x_factor
+```
+</div>
+
+We easily recognize that in variable `x_factor`, the numerical codes (1, 2, 3, and 4) have been replaced by the value `labels` (the color names). The last line of the output lists the names of all labels. 
+
+
+
+The frequency distribution
+
+<div class = "input">
+```{r, comment = ""}
+table(x_factor) 
+```
+</div>
+
+
+
+
+## Barplot 
+
+In the previous section, we learned how to use the command `table` to tabulate the data. For  
+
+<div class = "input">
+```{r, comment=""}
+table(x)
+```
+</div>
+
+Now, we 
+
+<div class = "input">
+```{r, comment=""}
+barplot(table(x))
+```
+</div>
+
+This is a rather minimalistic barplot. In particular, it lacks axis labels. We add the label for the y-axis by defining the argument `ylab = "freq."`; hence, we get the following graph.
+
+<div class = "input">
+```{r, comment=""}
+barplot(table(x), ylab = "freq.", xlab = "products")
+```
+</div>
+
+<br>
+<table>
+   <tr>
+   <th style = "background-color:LightGrey;">Code</th>
+   <th>1</th>
+   <th>2</th>
+   <th>3</th>
+   <th>4</th>
+   </tr>
+   <tr>
+   <td style = "background-color:LightGrey;">Label</td>
+   <td>black</td>
+   <td>white</td>
+   <td>silver</td>
+   <td>red</td>
+  </tr>
+</table> 
+<br>
+
+
+<div class = "input">
+```{r, comment=""}
+barplot(table(x), ylab = "freq.", xlab = "products",
+   names.arg = c("black", "white", "silver", "red"))
+```
+</div>
+
+And now with colors
+
+<div class = "input">
+```{r, comment=""}
+barplot(table(x), ylab = "freq.", xlab = "products",
+   names.arg = c("black", "white", "silver", "red"),
+   col = "deepskyblue")
+```
+</div>
+
+see here for other colors
+
+### Customization 
+We can customized the `barplot`. 
+
+* `main = "My barplot"`: giving the plot the title *My barplot*
+* `horiz = TRUE`: horizontal bars instead of vertical bars
+* `border = "red"`: change color to borders of the bars to red
+* ... (see `?barplot` for the details)
+
+### Your turn 
+
+Feel free to experiment with the commands `table` and `barplot`.
+
+```{r "barplot", exercise = TRUE, exercise.setup = "exsetup"}
+table(x)
+```
+
+### Quiz 
+
+```{r q_barplot_1, echo = FALSE}
+question("The command `barplot` can be directly applied to the data `x` without using `table`",
+  answer("yes", correct = TRUE),
+  answer("no")
+)
+```
+ 
+```{r q_barplot_2, echo = FALSE}
+question("Argument `xlab` specifies the label of the x-axis.",
+  answer("yes", correct = TRUE),
+  answer("no")
+)
+```
+
+```{r q_barplot_3, echo = FALSE}
+question("The argument `names.arg` can be used to label the categories.",
+  answer("yes", correct = TRUE),
+  answer("no")
+)
+```
+
+
+
+
+## Pie chart 
+
+```{r, comment=""}
+pie(table(x))
+```
+
+
+
+
+
+
+
+### Your turn 
+```{r pie, exercise = TRUE, exercise.setup = "exsetup"}
+table(x)
+```
+
+
+
+
+
+
