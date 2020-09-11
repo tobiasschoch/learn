@@ -8,7 +8,6 @@ runtime: shiny_prerendered
 
 ```{r setup, include=FALSE}
 library(learnr)
-
 tutorial_options(
    exercise.cap = "Code",
    exercise.completion = FALSE,
@@ -30,8 +29,6 @@ In this section, you will learn more about important data structures that we use
 
 * Vectors in more detail: working with character and logical vectors, more sophisticated retrieval of values.
 * Factors: a special but important type of vectors that is used to store categorical data.
-* Matrices: creating a matrix and using it in computations, learning how they are different from vectors.
-* Lists: creating lists and learning how they are different from vectors.
 * Dataframes: creating dataframes, accessing individual columns or rows of a dataframe, importing data into a dataframe, adding new columns to a dataframe.
 
 </div>
@@ -51,7 +48,6 @@ dwh <- data.frame(
   price = c(350.20, 350.20, 544.10, 210.50, 30.00),
   payment = c('Credit card', 'Postcard', 'Credit card', 'Invoice', 'Invoice')
 )
-
 head(dwh)
 ```
 
@@ -71,7 +67,7 @@ If your are not familiar with these commands, you are advised to learn the conce
 
 ## Vectors in more detail
 
-We have introduced vectors in the **Basic R** tutorial. We learned that there are four different types of vectors: double vectors, integer vectors, character (or string) vectors, and logical vectors. Whereas the **Basic R** tutorial only covered double vectors, here we will see examples of all four types of vectors. We will also learn about some more important functions that are helpful when working with vectors.
+We have introduced vectors in the **Basic R** tutorial. We learned that there are four different types of vectors: double vectors, integer vectors, character (or string) vectors, and logical vectors. While the **Basic R** tutorial only covered double vectors, here we will see examples of all four types of vectors. We will also learn about some important functions that are helpful when working with vectors.
 
 ### Vector types
 
@@ -84,7 +80,7 @@ typeof(price)
 ```
 </div>
 
-Another vector type that is also numeric is the `integer` vector. The column `purch_id` (the purchase ID) in the data warehouse looks like it could be a vector of type `integer`. However, we know that R will by default assume that any numeric value we enter is a double. Hence, we need to explicitely tell R to transform the vector to integers. We can do that with the function `as.integer()`:
+Another vector type that is also numeric is the `integer` vector. The column `purch_id` (the purchase ID) in the data warehouse looks like it could be a vector of type `integer`. However, we know that R will, by default, assume that any numeric value we enter is a double. Hence, we need to explicitly tell R to transform the vector to integers. We can do that with the function `as.integer()`:
 
 <div class = "input">
 ```{r, comment = ""}
@@ -157,7 +153,7 @@ c(10.75, "hello", TRUE, FALSE, 5L)
 
 ### Computing with vectors
 
-In the **Basic R** tutorial, we have seen that `sqrt(x)` will compute the square root of of every element in the vector `x`. It is important to know that functions in R perform computations element by element. Let's look at some examples.
+In the **Basic R** tutorial, we have seen that `sqrt(x)` will compute the square root of every element in the vector `x`. It is important to know that functions in R perform computations element by element. Let's look at some examples.
 
 <div class = "input">
 ```{r, comment = ""}
@@ -179,7 +175,7 @@ x + y
 ```
 </div>
 
-Let's have a look at the fifth element of the result. This is the sum of 33 (the fifth element of `y`) and 2.5 (the first element of `x`). Hence, R will in some way double the vector `x` so that the addition can still be performed elementwise. This is important to keep in mind because in some cases this is exactly what you want R to do. In other cases, however, this is not what you want and it might be better if R returns an error. But it won't and you have to be aware of that.
+Let's have a look at the fifth element of the result. This is the sum of 33 (the fifth element of `y`) and 2.5 (the first element of `x`). Hence, R will in some way double the vector `x` so that the addition can still be performed elementwise. This is important to keep in mind because in some cases this is exactly what you want R to do. In other cases, however, this is not what you want and it might be better if R would return an error. But it won't and you have to be aware of that.
 
 Finally, let's have a look at an example with a character vector. The `substr(x, start, stop)` will return a substring for every element of x depending on the start and stop index. Imagine that for some reason you would like to abbreviate the last name of all your customers by the first two letters of the last name. How can we do that?
 
@@ -214,7 +210,7 @@ mean(price)
 ```
 </div>
 
-This might be a bit surprising to you. Many functions in R will return a missing value if the input vector contained missing values. Fortunately, most functions will allow us to ignore missing values, but you need to explicitely tell the function to do so:
+This might be a bit surprising to you. Many functions in R will return a missing value if the input vector contains missing values. Fortunately, most functions will allow us to ignore missing values, but you need to explicitly tell the function to do so:
 
 <div class = "input">
 ```{r, comment = ""}
@@ -248,7 +244,15 @@ price[price >= 100]
 ```
 </div>
 
-Note that all prices that are 100 Franks or larger are returned, but also the `NA` value because R cannot determine whether or not `NA` is larger or equal to 100. The full set of logical operators are:
+Note that all prices that are 100 Franks or larger are returned, but also the `NA` value because R cannot determine whether or not `NA` is larger or equal to 100. If we want to avoid that, we can use the function `which()`. It will return all indices where our condition (`price >= 100`) is `TRUE` and will treat `NA` as `FALSE`:
+
+<div class = "input">
+```{r, comment = ""}
+price[which(price >= 100)]
+```
+</div>
+
+The full set of logical operators are:
 
 * `==` for equal to
 * `<` and `>` for smaller or larger than
@@ -257,32 +261,140 @@ Note that all prices that are 100 Franks or larger are returned, but also the `N
 
 You will get the chance to practice with those operators in the exercise section.
 
+### Some descriptive statistics with vectors
+
+Imagine you conduct a survey in a company and get a sample of $n=31$ participants with their gender and their hourly wage. The results of this survey can be stored in two vectors:
+
+<div class = "input">
+```{r, comment = ""}
+gender <- c('m', 'm', 'm', 'm', 'm', 'm', 'f', 'f', 'f', 'f', 'm',
+            'm', 'm', 'f', 'm', 'm', 'f', 'm', 'f', 'm', 'm', 'm',
+            'm', 'm', 'f', 'm', 'm', 'm', 'f', 'f', 'f')
+wage <- c(16, 21, 22, 23, 23, 23, 24, 24, 25, 25, 25,
+          25, 25, 26, 26, 26, 27, 27, 28, 28, 28, 29,
+          29, 29, 30, 30, 30, 32, 34, 34, 35)
+```
+</div>
+
+Let's first test whether the vector `wage` really contains 31 elements (you can do the same for `gender`):
+
+<div class = "input">
+```{r, comment = ""}
+length(wage)
+```
+</div>
+
+We might be interested how many men and women the sample contains. In R, this is easy:
+
+<div class = "input">
+```{r, comment = ""}
+table(gender)
+```
+</div>
+
+We see that the sample contains 11 women and 20 men. Now, in order to get an idea about the wage data, let's print out the most important (univariate) descirptive statistics:
+
+<div class = "input">
+```{r, comment = ""}
+summary(wage)
+```
+</div>
+
+Now we got the summary statistics over the full sample. However, we might be more interested in computing descriptive statistics by group. For example, we might wonder whether men are paid more on average than women (based on this sample). For this, we can use the R function `by()`:
+
+<div class = "input">
+```{r, comment = ""}
+by(wage, gender, mean)
+```
+</div>
+
+The function `by()` splits the wages into the two groups ("m" and "f") and then computes the mean for each group seperately. In this sample, women have a higher average wage than men. Note however, that we would have to conduct a statistical test in order to determine whether this difference is statistically significant.
+
+
 ### Your turn
 
-Now it is time to test your knowledge about basic mathematic operations in R.
-
-```{r, "basic1", exercise = TRUE}
-# Add 120 and 56 and subtract 14
+```{r, "vec_ex1", exercise = TRUE}
+# Combine the double vector a and the integer vector b. What happens?
+a <- c(22, 10.5, 3.2)
+b <- c(1L, 5L, 3L)
 ```
 
-```{r "basic1-solution"}
-120 + 56 - 14
+```{r "vec_ex1-solution"}
+a <- c(22, 10.5, 3.2)
+b <- c(1L, 5L, 3L)
+c(a, b)
+```
+
+```{r, "vec_ex2", exercise = TRUE}
+# Divide x by y. What happens?
+x <- c(1, 3, 2)
+y <- c(1, 2)
+```
+
+```{r "vec_ex2-solution"}
+x <- c(1, 3, 2)
+y <- c(1, 2)
+x/y
+```
+
+```{r, "vec_ex3", exercise = TRUE}
+# s is a character vector. Retrieve a vector with the first letter of each element of s.
+s <- c("Hallo", "Hi", "Bonjour", "Ciao")
+```
+
+```{r "vec_ex3-solution"}
+s <- c("Hallo", "Hi", "Bonjour", "Ciao")
+substr(s, 1, 1)
+```
+
+```{r, "vec_ex4", exercise = TRUE}
+# s is a character vector. Use the function toupper() and see what happens.
+s <- c("Hallo", "Hi", "Bonjour", "Ciao")
+```
+
+```{r "vec_ex4-solution"}
+s <- c("Hallo", "Hi", "Bonjour", "Ciao")
+toupper(s)
+```
+
+```{r, "vec_ex5", exercise = TRUE}
+# The vector lname contains all last names. Modify the code so that only last names starting with 'M' are extracted.
+lname <- c('Müller', 'Sutter', 'Zuber', 'Allen', 'Allen')
+# lname[]
+```
+
+```{r "vec_ex5-solution"}
+lname <- c('Müller', 'Sutter', 'Zuber', 'Allen', 'Allen')
+lname[substr(lname, 1, 1) == "M"]
 ```
 
 ### Quiz
 
-```{r, "punkt-vor-strich1", echo = FALSE}
-question("What will be the result of the R computation `3 + 5 * 4`?",
-  answer("32"),
-  answer("23", correct = TRUE),
-  answer("17"),
-  answer("19")
+```{r, "vec_ex_mc1", echo = FALSE}
+question("We have a vector `a <- c(22, 10.5, 3.2)` and a vector `b <- c(FALSE, TRUE, TRUE)`. What is the output of `c(a, b)`?",
+  answer("R returns an error. That is not possible."),
+  answer("`[1] 22.0 10.5  3.2  0.0  1.0  1.0`", correct = TRUE, message = "This is another example of coercion. The logical value `TRUE` will be coerced to 1.0 and the logical value `FALSE` will be coerced to 0.0. The resulting vector is of type double."),
+  answer("`[1] TRUE TRUE TRUE FALSE TRUE TRUE`"),
+  answer('`[1] "22.0" "10.5" "3.2" "FALSE" "TRUE" "TRUE"`'),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
+)
+```
+
+```{r, "vec_ex_mc2", echo = FALSE}
+question("Given a vector `x <- c(1, 3, 2)`, what is the result of the expression `x^2`?",
+  answer("14"),
+  answer("`[1] 1 3 2`"),
+  answer("4"),
+  answer("`[1] 1 9 4`", correct = TRUE, message = "R will compute the square for each element of the vector and return a vector of length 3."),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
 )
 ```
 
 ## Factors
 
-A factor is a special vector type. Internally, R treats factors as integer vectors and therefore we have not mentioned them above when we were talking about vector types. However, factors are very important in Statistics as they allow us to store categorical data, which we often use in statistical data analysis. A factor always has a limited, predefined set of categories (R calls them `levels`). In our data warehouse example, we would transform both the `product` column and the `payment` column to factors. Why? Both of them are limited to a set of different categories that we know in advance. For `product` it is the set of products that *SmartPack* offers. For `payment` it is the set of different payment options that are available in the online shop.
+A factor is a special vector type. Internally, R treats factors as integer vectors and therefore we have not mentioned them above when we were talking about vector types. However, factors are very important in Statistics as they allow us to store categorical (i.e., nominal or ordinal) data, which we often use in statistical data analysis. A factor always has a limited, predefined set of categories (R calls them `levels`). In our data warehouse example, we would transform both the `product` column and the `payment` column to factors. Why? Both of them are limited to a set of different categories that we know in advance. For `product` it is the set of products that *SmartPack* offers. For `payment` it is the set of different payment options that are available in the online shop.
 
 Imagine that *SmartPack* offers five products: four backpack models (Model XX, Model A+, Expert, and Family) and drinking bottles. Let's convert the `product` column into a factor:
 
@@ -305,6 +417,18 @@ typeof(product_factor)
 
 As mentioned before, R treats factors internally as integer vectors. But that is nothing we need to worry about.
 
+Often, categorical data are provided as a so called dummy variable with values 0 and 1. For example, we might have a vector `gender <- c(0, 1, 1, 0, 0, 1, 1, 1, 0)` where 0 denotes men and 1 denotes women. In this case, the levels are `c(0, 1)`, but we might like to add some labels so that we better understand what the values 0 and 1 mean. Let's see how we do that:
+
+<div class = "input">
+```{r, comment = ""}
+gender <- c(0, 1, 1, 0, 0, 1, 1, 1, 0)
+gender_factor <- factor(gender, levels = c(0, 1), labels = c("m", "f"))
+gender_factor
+```
+</div>
+
+R will then print the labels instead of the somewhat abstract levels 0 and 1.
+
 One big advantage of using factors is that many R functions will know what to do when they get a factor as input. For example, the function `table()` will output counts for all categories:
 
 <div class = "input">
@@ -320,201 +444,286 @@ You might wonder why we don't convert the columns `lname` and `fname` to factors
 ### Your turn
 
 ```{r, "fac1", exercise = TRUE}
-# Create a variable a and assign it the value 33. Then print the result of a * 5
+# Above we transformed 'product' into a factor. Now, do the same for 'payment'.
+payment <- c('Credit card', 'Postcard', 'Credit card', 'Invoice', 'Invoice')
 ```
 
 ```{r "fac1-solution"}
-a <- 33
-print(a * 5)
+payment <- c('Credit card', 'Postcard', 'Credit card', 'Invoice', 'Invoice')
+payment_factor <- factor(payment, levels = c('Credit card', 'Postcard', 'Invoice'))
+```
+
+```{r, "fac2", exercise = TRUE}
+# Use the code from the first exercise and then count the absolute frequencies per level.
+payment <- c('Credit card', 'Postcard', 'Credit card', 'Invoice', 'Invoice')
+```
+
+```{r "fac2-solution"}
+payment <- c('Credit card', 'Postcard', 'Credit card', 'Invoice', 'Invoice')
+payment_factor <- factor(payment, levels = c('Credit card', 'Postcard', 'Invoice'))
+table(payment_factor)
+```
+
+```{r, "fac3", exercise = TRUE}
+# Use the code from the first exercise to create the factor.
+# Then add a new value 'Credit card' at index 6. What happens?
+payment <- c('Credit card', 'Postcard', 'Credit card', 'Invoice', 'Invoice')
+```
+
+```{r "fac3-solution"}
+payment <- c('Credit card', 'Postcard', 'Credit card', 'Invoice', 'Invoice')
+payment_factor <- factor(payment, levels = c('Credit card', 'Postcard', 'Invoice'))
+payment_factor[6] <- 'Credit card'
 ```
 
 ### Quiz
 
 ```{r, "fac_mc1", echo = FALSE}
-question("We create a variable, `a <- 10`, and then run the following code: `b <- a * 3 + 3`. What is the value of `b`?",
-  answer("10"),
-  answer("33", correct = TRUE),
-  answer("60"),
-  answer("30")
+question("A factor variable has three predefined levels: 'Credit card', 'Postcard', and 'Invoice'. We add a new value 'Cash' at the end of the factor vector. What happens?",
+  answer("R will add an `NA` value because an invalid level has been added.", correct = TRUE, message = "An mentioned above, the set of levels is predefined and if we add new values that are not a valid member of levels, R will insert a missing value."),
+  answer("R will correctly add the new value 'Cash' and will create an additional level for it." ),
+  answer("R will add the new value but will coerce the factor to a character vector."),
+  answer("Nothing happens. R will not add the new value to the factor."),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
 )
 ```
 
-## Matrices
+## Data frames
 
-So far, we have strongly focused on vectors. Another important data structure that is used a bit less often than vectors are matrices. The main difference is that a vector is a one-dimensional data structure whereas a matrix is a two-dimensional data structure. In math notation, we would write a (row) vector as $x=[3\;\; 4\;\; 1\;\; 2\;\; 10]$. A matrix would be written as 
+Together with vectors, data frames are the most important data structure in R. Whenever you will work with data, it is highly likely that you will need to organize your data as a data frame. Data frames are popular because they allow you to store data of different types (doubles, characters, logicals, etc.) in a rectangular (tabular) format. You can also store different data types in lists, however, lists are less handy to work with and visual data inspection is much easier with data frames. Note that we will not cover lists in this tutorial.
 
-$A = \begin{bmatrix}
-1 & 2 & 3\\
-4 & 5 & 6
-\end{bmatrix}.$
+As a matter of fact, the data warehouse we show in the overview of this tutorial is nothing else than a visualization of a R data frame. In this section, we will learn how to create data frames, how to access elements of a data frame (rows, columns, individual values), and how to import data from a file directly into a data frame.
 
-As before with the factors, R treats a matrix internally as a vector with some special attributes that let all functions know that it should be treated as a matrix. For us this does not matter at all. We treat vectors and matrices as two different data structures. Importantly, as with vectors, a matrix can only contain data of one type and we cannot mix different data types (e.g., doubles and characters).
+### Creating a data frame
 
-### Creating a matrix
-
-In order to create a matrix, we can use the R function `matrix()`. The function arguments we need to provide are the following:
-
-* `data`: a vector with data that should be organized as a matrix.
-* `nrow`: the number of rows of the matrix.
-* `ncol`: the number of columns of the matrix.
-* `byrow`: if this is set to `TRUE`, the matrix will be filled by rows, otherwise by columns.
-
-An example will help us to understand this function:
+R makes it easy to create your own data frame with the `data.frame()` function and by providing the columns of the data frame as function arguments, e.g.,
 
 <div class = "input">
-```{r, comment = ""}
-(A <- matrix(c(1, 2, 3, 4, 5, 6), nrow = 2, ncol = 3, byrow = TRUE))
+```{r, comment=""}
+df <- data.frame(
+  purch_id = c(21234, 44321, 55437, 95432, 11209),
+  lname = c('Müller', 'Sutter', 'Zuber', 'Allen', 'Allen'),
+  product = c('Model XX', 'Model XX', 'Expert', 'Model A+', 'Drinking bottle'),
+  price = c(350.20, 350.20, 544.10, 210.50, 30.00),
+  payment = c('Credit card', 'Postcard', 'Credit card', 'Invoice', 'Invoice'),
+  stringsAsFactors = FALSE
+)
 ```
 </div>
 
-First of all, note that in the code block above, we use parentheses `()` around the whole expression in order to force R to print `A` but also to store `A` in the workspace. Importantly, the number of elements in the `data` vector is 6, just like the product of the two dimensions ($2*3$). In contrast to what you might expect, R will also be able to create a matrix if the number of elements we provide is not equal to the product of the dimensions (although R may print a warning message). This can cause undesired outcomes, so be careful when specifying the dimensions.
-
-Finally, we can combine matrices with the two functions `cbind()` (combine columns) and `rbind()` (combine rows). For example, let's add a column to `A`:
+The `data.frame()` function has the undesired property of treating all character vectors as factors. In the section on factors, we discussed why this may lead to an unwanted outcome. If we add the additional function argument `stringsAsFactors = FALSE`, this behavior can be prevented. With the function `head()`, we can visually inspect the first few rows of our data frame. Let's do that!
 
 <div class = "input">
-```{r, comment = ""}
-(A <- cbind(A, c(10, 10)))
+```{r, comment=""}
+head(df)
 ```
 </div>
 
-We will now have a quick look at some R functions that are important when we work with matrices. If you want to check the dimensions of your matrix, you can use the functions `nrow()` and `ncol()`. Or more generally, if you want to check whether some object is actually a matrix, you can "ask" R as follows:
+This works nicely and we get a first idea of how our data looks. Note that the header contains the column names and to the left we see the row names. We did not specify any row names, so by default, rows will be numbered starting from one. Every row corresponds to a data entry referring to the same object (here, every row corresponds to a purchase by a customer). We can get a more technical view of the dataframe using the function `str()` (which stands for structure):
 
 <div class = "input">
-```{r, comment = ""}
-is.matrix(A)
+```{r, comment=""}
+str(df)
 ```
 </div>
 
-At some point you might want to compute the transpose of a matrix. You might remember from your math class what the transpose of a matrix is (otherwise, look it up [here](https://en.wikipedia.org/wiki/Transpose)). Let's compute the transpose of `A`:
+A common operation with data frames is to add new columns to already existing data frames. Imagine that the column `price` does not contain the correct price because we granted all our customers a 10% discount. We want to add a column with the actual price that was paid, but we also want to keep the original price. How can we do that? 
 
 <div class = "input">
-```{r, comment = ""}
-t(A)
+```{r, comment=""}
+df$price_paid <- df$price * 0.9
+head(df)
 ```
 </div>
 
-### Accessing elements of a matrix
+We see that adding a new column to the data frame simply requires one line of code. The right side of the assign operator `<-` computes a vector of the new prices based on the old prices. The resulting vector is assigned to the new column `price_paid`. With the `$` sign, we can access one column of the data frame by its column name (more on that in the next subsection).
 
-In contrast to vectors, where you access individual elements by one index, you will need to indices to retrieve individual elements of a matrix. The first index will specify which row to select and the second index will specify which column to select. For example, if you want to retrieve the third element in the second row of `A`, you can code the following:
+There are a handful of useful utility functions for data frames that you can test on your own. For example: `is.data.frame()`, `colnames()`, `nrow()`, and `ncol()`.
+
+### Accessing elements of a data frame
+
+To get a specific value in a cell (row-column combination), we first specify the row index and then the column index (separated by a comma). For example, to get the value of `product` (third column) in the second row, we would code:
 
 <div class = "input">
-```{r, comment = ""}
-A[2, 3]
+```{r, comment=""}
+df[2, 3]
 ```
 </div>
 
-If you want to access the full first row, you code:
+Alternatively, we could access the column via the column name instead of the column index: `df[2, "product"]`.
+
+Sometimes, we need to retrieve the values of one or multiple columns. We can either extract a column as a vector, or we can extract a so called column slice. In the latter case, the result will still be a data frame, whereas in the first case it will be a vector. Let's check it out in practice.
 
 <div class = "input">
-```{r, comment = ""}
-A[1, ]
+```{r, comment=""}
+df[["price"]]
 ```
 </div>
 
-The procedure for retrieving full columns is equivalent except for you specify the second index and leave the first one empty.
+Here, we see that the output will be a vector with the prices. Alternative ways to get the same result are `df$price` and `df[ ,"price"]`. Try them out yourself.
+
+We get a column slice if we use single square brackets `[]` instead of the double square brackets `[[]]`. As expected, the result will still be a data frame:
+
+<div class = "input">
+```{r, comment=""}
+is.data.frame(df["price"])
+```
+</div>
+
+We can also extract a slice with multiple columns:
+
+<div class = "input">
+```{r, comment=""}
+df[c("price", "price_paid")]
+```
+</div>
+
+So far, we have looked at column slices. We can also extract row slices. For example, if we only want to access the first and second row of the data frame, we can use the following code:
+
+<div class = "input">
+```{r, comment=""}
+df[c(1, 2), ]
+```
+</div>
+
+Note how we leave the second index specifier after the comma empty. That is, we do not specify which columns to extract and R knows that we want to extract all columns.
+
+One very important tool in our R toolbox is knowing how to extract rows based on conditions of individual values in columns. For example, we want to compute the sum of the paid prices `price_paid` of all customers that paid by credit card.
+
+<div class = "input">
+```{r, comment=""}
+sum(df[df$payment == "Credit card", "price_paid"])
+```
+</div>
+
+Let's look at this expression in detail. `df$payment == "Credit card"` will return a logical vector with the value `TRUE` whenever the payment option is "Credit card". We use this logical vector to index the rows (i.e., to only select rows where the payment option was "Credit card"). The second index will select the column we want, namely `price_paid`. The result of this will be a vector of length two which contains the prices paid by the two customers who chose "Credit card" as the payment option. Finally, we simply compute the sum over the elements in this vector with the `sum()` function.
+
+### Importing data into a data frame
+
+So far, we have learned how to create data frames in R and how to access certain elements of a data frame. In practice, we usually want to import data from a CSV or a TXT file directly into a R data frame. R provides many functions that import data from various file formats (even Excel or SPSS files!). Here, we will only learn about the most basic import function in R, `read.table()`.
+
+`read.table()` is a function with many possible arguments (check the help page for more info: `?read.table`). However, we usually only need three function arguments to import our data:
+
+* `file` will specify the file name of the file that should be imported. Note that if we provide only the file name and not a path, R will look for this file in the current working directory (see **Basic R** tutorial for more on working directories).
+* `header` will specify whether or not a header line with the column names exists in the file.
+* `sep` will specify which separator is used to separate values in the file to be imported.
+
+As mentioned before, we might want to also specify `stringsAsFactors = FALSE` when we import data such that character columns are not automatically transformed into factors.
+
+Imagine you have a CSV (comma-separated values) file named `sales.csv` in your working directory that looks like this:
+
+<div class = "input">
+```{r, echo = FALSE, comment = ""}
+cat('purch_id;lname;product;price;payment\n21234;Müller;Model XX;350.2;Credit Card\n44321;Sutter;Model XX;350.2;Postcard\n55437;Zuber;Expert;544.1;Credit Card\n95432;Allen;Model A+;210.5;Invoice\n11209;Allen;Drinking bottle;30.0;Invoice')
+```
+</div>
+
+The file has a header row containing the column names and the values are separated by semicolons. We can import this file into R as follows:
+
+<div class = "input">
+```{r, eval = FALSE}
+df <- read.table("sales.csv", header = TRUE, sep = ";", stringsAsFactors = FALSE)
+```
+</div>
+
+In most cases, this simple line of code will be enough to import your file into a R data frame. However, sometimes importing data into R can be surprisingly tedious. A common problem is that R does not handle special characters, such as German Umlauts, properly. In that case, we can check the encoding of our file `sales.csv` and provide it as an argument to the function `read.table()`. For example, if our file is encoded in UTF-8, we would add `fileEncoding = "UTF-8"` to the function.
 
 ### Your turn
 
-```{r, "var1", exercise = TRUE}
-# Create a variable a and assign it the value 33. Then print the result of a * 5
+```{r, "df1", exercise = TRUE}
+# Change the column names of the data frame df to whatever names you like.
+df <- data.frame(
+  purch_id = c(21234, 44321, 55437, 95432, 11209),
+  lname = c('Müller', 'Sutter', 'Zuber', 'Allen', 'Allen'),
+  product = c('Model XX', 'Model XX', 'Expert', 'Model A+', 'Drinking bottle'),
+  price = c(350.20, 350.20, 544.10, 210.50, 30.00),
+  payment = c('Credit card', 'Postcard', 'Credit card', 'Invoice', 'Invoice'),
+  stringsAsFactors = FALSE
+)
+# colnames(df) <- ...
 ```
 
-```{r "var1-solution"}
-a <- 33
-print(a * 5)
+```{r "df1-solution"}
+df <- data.frame(
+  purch_id = c(21234, 44321, 55437, 95432, 11209),
+  lname = c('Müller', 'Sutter', 'Zuber', 'Allen', 'Allen'),
+  product = c('Model XX', 'Model XX', 'Expert', 'Model A+', 'Drinking bottle'),
+  price = c(350.20, 350.20, 544.10, 210.50, 30.00),
+  payment = c('Credit card', 'Postcard', 'Credit card', 'Invoice', 'Invoice'),
+  stringsAsFactors = FALSE
+)
+colnames(df) <- c('id', 'lastName', 'productName', 'amountPaid', 'paymentOption')
+```
+
+```{r, "df2", exercise = TRUE}
+# Extract the first two rows of the data frame df, but only for the columns 'lname' and 'product'
+df <- data.frame(
+  purch_id = c(21234, 44321, 55437, 95432, 11209),
+  lname = c('Müller', 'Sutter', 'Zuber', 'Allen', 'Allen'),
+  product = c('Model XX', 'Model XX', 'Expert', 'Model A+', 'Drinking bottle'),
+  price = c(350.20, 350.20, 544.10, 210.50, 30.00),
+  payment = c('Credit card', 'Postcard', 'Credit card', 'Invoice', 'Invoice'),
+  stringsAsFactors = FALSE
+)
+```
+
+```{r "df2-solution"}
+df <- data.frame(
+  purch_id = c(21234, 44321, 55437, 95432, 11209),
+  lname = c('Müller', 'Sutter', 'Zuber', 'Allen', 'Allen'),
+  product = c('Model XX', 'Model XX', 'Expert', 'Model A+', 'Drinking bottle'),
+  price = c(350.20, 350.20, 544.10, 210.50, 30.00),
+  payment = c('Credit card', 'Postcard', 'Credit card', 'Invoice', 'Invoice'),
+  stringsAsFactors = FALSE
+)
+df[c(1, 2), c("lname", "product")]
+```
+
+```{r, "df3", exercise = TRUE}
+# Get only entries with a price that is larger than 250 Franks.
+df <- data.frame(
+  purch_id = c(21234, 44321, 55437, 95432, 11209),
+  lname = c('Müller', 'Sutter', 'Zuber', 'Allen', 'Allen'),
+  product = c('Model XX', 'Model XX', 'Expert', 'Model A+', 'Drinking bottle'),
+  price = c(350.20, 350.20, 544.10, 210.50, 30.00),
+  payment = c('Credit card', 'Postcard', 'Credit card', 'Invoice', 'Invoice'),
+  stringsAsFactors = FALSE
+)
+```
+
+```{r "df3-solution"}
+df <- data.frame(
+  purch_id = c(21234, 44321, 55437, 95432, 11209),
+  lname = c('Müller', 'Sutter', 'Zuber', 'Allen', 'Allen'),
+  product = c('Model XX', 'Model XX', 'Expert', 'Model A+', 'Drinking bottle'),
+  price = c(350.20, 350.20, 544.10, 210.50, 30.00),
+  payment = c('Credit card', 'Postcard', 'Credit card', 'Invoice', 'Invoice'),
+  stringsAsFactors = FALSE
+)
+df[df$price > 250, ]
 ```
 
 ### Quiz
 
-```{r, "var_mc1", echo = FALSE}
-question("We create a variable, `a <- 10`, and then run the following code: `b <- a * 3 + 3`. What is the value of `b`?",
-  answer("10"),
-  answer("33", correct = TRUE),
-  answer("60"),
-  answer("30")
+```{r, "df_mc1", echo = FALSE}
+question("What are the benefits of using a data frame? (select ALL that apply)",
+  answer("It organizes the data in a tabular format.", correct = TRUE),
+  answer("It can store data of different data types.", correct = TRUE),
+  answer("It is the only data structure that can handle data of different data types."),
+  answer("It supports visual inspection of data.", correct = TRUE),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
 )
 ```
 
-## Lists
-
-In this section, we will briefly learn about lists. In contrast to vectors, lists can store elements of different data types. This is the main reason why we might need to use a list instead of a vector. Lists are not usually needed for basic statistic computations, but it might still be useful to know about them.
-
-### Creating a list
-
-To create a list, we can use the `list()` function and provide all elements that should go into the list as function arguments. For example, we might want to put the last names `lname` and the prices `price` into a list:
-
-<div class = "input">
-```{r, comment = ""}
-l <- list(lname, price)
-```
-</div>
-
-If we want to get an overview of how `l` looks, we can use the `str()` function (short for structure):
-
-<div class = "input">
-```{r, comment = ""}
-str(l)
-```
-</div>
-
-The list `l` contains a vector of characters as the first element and a vector of doubles as the second element.
-
-As before, we can verify that `l` is actually a list with `is.list()`.
-
-<div class = "input">
-```{r, comment = ""}
-is.list(l)
-```
-</div>
-
-### Accessing elements of a list
-
-Retrieving (accessing) elements from a list is slightly different than in the case of vectors. If we use single square brackets `[]`, we actually retrieve a list with just the elements specified in the square brackets. For example:
-
-<div class = "input">
-```{r, comment = ""}
-str(l[1])
-```
-</div>
-
-We can see that we get a so called *slice* of a list which is itself a list with only one element.
-
-However, if we use double square brackets `[[]]`, we will retrieve the list element itself. Importantly, with this notation we can only extract one single list element. Doing otherwise will lead to unexpected behavior (use `c(1, 2)` within the double square brackets and see what happens!).
-
-<div class = "input">
-```{r, comment = ""}
-str(l[[1]])
-```
-</div>
-
-Instead of a list, we now get the character vector itself.
-
-### Your turn
-
-Now it is time to test your knowledge about vectors.
-
-```{r, "vec1", exercise = TRUE}
-# Create a vector of all whole numbers between 1 and 100 and assign it to y
-y <- 
-```
-
-```{r "vec1-solution"}
-y <- 1:100
-```
-
-### Quiz
-
-```{r, "vec_mc1", echo = FALSE}
-question("We create a vector a as follows: `a <- 10`. Which of the following answers is correct?",
-  answer("a has length 1 and is of type string"),
-  answer("a is not a vector"),
-  answer("a has length 1 and is of type double", correct = TRUE),
-  answer("a has length 10 and is of type double")
+```{r, "df_mc2", echo = FALSE}
+question("What should we do before we import data from a file? (select ALL that apply)",
+  answer("We should empty the workspace of our current R session."),
+  answer("We should check if our file has a header line.", correct = TRUE),
+  answer("We should check the separator used in our file.", correct = TRUE),
+  answer("We should check what the current working directory of our R session is and if our file is really stored there.", correct = TRUE),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
 )
 ```
-
-## Dataframes
-
-stringsAsFactors = FALSE when importing
-
-### Workspace

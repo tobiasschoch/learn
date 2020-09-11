@@ -8,7 +8,6 @@ runtime: shiny_prerendered
 
 ```{r setup, include=FALSE}
 library(learnr)
-
 tutorial_options(
    exercise.cap = "Code",
    exercise.completion = FALSE,
@@ -69,11 +68,11 @@ Finally, the next code example shows how we can divide two numbers.
 ```
 </div>
 
-IMPORTANT: R follows the mathematical convention that multiplication and division precede addition and subtraction. For example, the following code first multiplies $2$ by $3$ and only after adds $4$.
+IMPORTANT: R follows the mathematical convention that multiplication and division precede addition and subtraction. For example, the following code first multiplies $3$ by $4$ and only after adds $2$.
 
 <div class = "input">
 ```{r, comment = ""}
-2 * 3 + 4
+2 + 3 * 4
 ```
 </div>
 
@@ -81,14 +80,14 @@ If we want to prioritize the addition over the multiplication, we can use parent
 
 <div class = "input">
 ```{r, comment = ""}
-2 * (3 + 4)
+(2 + 3) * 4
 ```
 </div>
 
 
 ### Square root and power function
 
-Other important mathematical functions that we use in R are the square root $\sqrt{x}$ of a number $x$ and taking the power of a number $x$, i.e., $x^y$. The next code example shows that for computing the square root of a number R has a built-in function `sqrt()` that takes one argument, namely the number for which we want to compute the square root. This is the first time we come accross an R function. R provides many built-in functions, i.e., functions that someone else programmed and that are ready to be used. The generic form of a function in R is `functionName(arg1 = val1, arg2 = val2, etc.)`. You can use a function by typing its function name and providing arguments within the parentheses. So, let's see the `sqrt()` function in action.
+Other important mathematical functions that we use in R are the square root $\sqrt{x}$ of a number $x$ and taking the power of a number $x$, i.e., $x^y$. The next code example shows that for computing the square root of a number R has a built-in function `sqrt()` that takes one argument, namely the number for which we want to compute the square root. This is the first time we come accross an R function. R provides many built-in functions, i.e., functions that someone else programmed and that are ready to be used. Whenever you will see something like `functionName()`, i.e., a function name followed by (round) parentheses, you will know that it is a R function. You can use a function by typing its function name and providing arguments within the parentheses. So, let's see the `sqrt()` function in action.
 
 <div class = "input">
 ```{r, comment = ""}
@@ -96,7 +95,7 @@ sqrt(2)
 ```
 </div>
 
-The next code example shows how to compute the power of a number. For example, we want to compute $3^9$, which can be easily done in R with the following code:
+So, this simply computes the square root of 2. The next code example shows how to compute the power of a number. For example, we want to compute $3^9$, which can be easily done in R with the following code:
 
 <div class = "input">
 ```{r, comment = ""}
@@ -106,7 +105,7 @@ The next code example shows how to compute the power of a number. For example, w
 
 ### Logarithms 
 
-Last but not least, in Statistics we often need to compute the logarithm of a number (log-transformations of variables are quite common, you will learn about that later on). As you might remember from your math classes, you can use different bases when computing the logarithm. A typical base to use is $10$. The following code example shows how to compute the logarithm of $45'000$ with respect to the base $10$.
+Last but not least, in Statistics we often need to compute the logarithm of a number (log-transformations of variables are quite common, you will learn about that later on). As you might remember from your math class, you can use different bases when computing the logarithm. A typical base to use is $10$. The following code example shows how to compute the logarithm of $45'000$ with respect to the base $10$.
 
 <div class = "input">
 ```{r, comment = ""}
@@ -161,7 +160,9 @@ question("What will be the result of the R computation `3 + 5 * 4`?",
   answer("32"),
   answer("23", correct = TRUE, message = "The multiplication precedes the addition. Hence, R first computes $5*4$ and then adds $3$."),
   answer("17"),
-  answer("19")
+  answer("19"),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
 )
 ```
 
@@ -170,7 +171,9 @@ question("What will be the result of the R computation `(3 + 5) * 4`?",
   answer("32", correct = TRUE, message = "By using parentheses, we force R to compute $3+5$ before multiplying this by $4$."),
   answer("23"),
   answer("60"),
-  answer("16")
+  answer("16"),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
 )
 ```
 
@@ -179,7 +182,9 @@ question("The R command for $e^x$ is `exp(x)`. What will be the result of the R 
   answer("148.4132"),
   answer("100"),
   answer("5", correct = TRUE, message = "The `log()` function is the inverse of the `exp()` function. That means, they cancel each other out and the result will simply be 5. Or in mathematical terms: $log_e e^5 = 5$."),
-  answer("0")
+  answer("0"),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
 )
 ```
 
@@ -229,11 +234,11 @@ R will internally replace the variables in the code above with the values assign
 
 ### Changing the value assigned to a variable
 
-The `print()` function prints the output of the variable that is provided as a function argument. So, let's see what the current value of the variable `a` is:
+If we want to see the value of a variable, we can simply type the name of the variable and run this code (or, type the name of the variable in the console and hit Enter). So, let's see what the current value of the variable `a` is:
 
 <div class = "input">
 ```{r, comment = ""}
-print(a)
+a
 ```
 </div>
 
@@ -242,7 +247,7 @@ Now, let's change the value of `a` (a.k.a. overwrite variable `a`). By printing 
 <div class = "input">
 ```{r, comment = ""}
 a <- 10
-print(a)
+a
 ```
 </div>
 
@@ -268,12 +273,12 @@ cat('[1] "b" "c"\n')
 ### Your turn
 
 ```{r, "var1", exercise = TRUE}
-# Create a variable a and assign it the value 33. Then print the result of a * 5
+# Create a variable a and assign it the value 33. Multiply a by 5
 ```
 
 ```{r "var1-solution"}
 a <- 33
-print(a * 5)
+a * 5
 ```
 
 ```{r, "var2", exercise = TRUE}
@@ -292,7 +297,9 @@ question("We create a variable, `a <- 10`, and then run the following code: `b <
   answer("10"),
   answer("33", correct = TRUE, message = "R first multiplies `a` by `3` and then adds `3`. The result of that is assigned to `b`."),
   answer("60"),
-  answer("30")
+  answer("30"),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
 )
 ```
 
@@ -301,7 +308,9 @@ question("The workspace contains three variables `a`, `b`, and `c`. We run `rm(l
   answer("`a`, `b`, and `c`"),
   answer("only `a` and `b`"),
   answer("only `c`"),
-  answer("None", correct = TRUE, message = "The `rm()` function has a parameter `list` that allows us to specify a list of variable names that R should remove. We know that `ls()` returns a list of all variables in the workspace. Hence, all variables in the workspace will be removed and the workspace will be empty.")
+  answer("None", correct = TRUE, message = "The `rm()` function has a parameter `list` that allows us to specify a list of variable names that R should remove. We know that `ls()` returns a list of all variables in the workspace. Hence, all variables in the workspace will be removed and the workspace will be empty."),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
 )
 ```
 
@@ -460,7 +469,9 @@ question("We create a vector a as follows: `a <- 10`. Which of the following ans
   answer("a has length 1 and is of type string"),
   answer("a is not a vector"),
   answer("a has length 1 and is of type double", correct = TRUE),
-  answer("a has length 10 and is of type double")
+  answer("a has length 10 and is of type double"),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
 )
 ```
 
@@ -469,7 +480,9 @@ question("We create a vector b as follows: `b <- c(1, 3, 'hello')`. Which of the
   answer("It is not possible to mix numbers and strings. R will output an error message."),
   answer("R will create a vector of 3 strings: `'1' '3' 'hello'`", correct = TRUE, message = "This is due to a concept called coercion which automatically transforms different data types into one data type according to some rules."),
   answer("R will create a vector of 3 numbers: `'1' '3' '5'` because 'hello' has 5 letters."),
-  answer("R will crash.")
+  answer("R will crash."),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
 )
 ```
 
@@ -478,7 +491,9 @@ question("We create a vector x as follows: `x <- c(1, 3, 2, 6, 9)`. What does R 
   answer("5"),
   answer("2"),
   answer("R will output an error message because it is an invalid command."),
-  answer("3", correct = TRUE, message = "R measures the length of the vector `x` without the elements 2 and 3. Since `x` initially contains 5 elements, R will return 3.")
+  answer("3", correct = TRUE, message = "R measures the length of the vector `x` without the elements 2 and 3. Since `x` initially contains 5 elements, R will return 3."),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
 )
 ```
 
@@ -487,7 +502,9 @@ question("We create a large vector `x` and then want to save a vector `sqrt_x` w
   answer("`sqrt(x)`"),
   answer("`sqrt_x <- sqrt(x)`", correct = TRUE, message = "We simply assign the result of the function `sqrt(x)` to the variable `sqrt_x`."),
   answer("`x <- log(x)`"),
-  answer("This is not possible in R.")
+  answer("This is not possible in R."),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
 )
 ```
 
@@ -521,7 +538,7 @@ Note that the default working directory might look like that (at least if you ar
 
 However, we might have all our files nicely organized at the following location: `C:\Users\kim.muster\Documents\my-project` (Figure 1).
 
-![Figure 1: Windows Explorer](images/WindowsExplorer_schematic.png){#id .class width=60% height=60%}
+![Figure 1: Windows Explorer](WindowsExplorer_schematic.png){#id .class width=60% height=60%}
 
 How can we set the working directory to the location where all my files are? The following code will do the trick:
 
