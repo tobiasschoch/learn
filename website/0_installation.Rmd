@@ -1,0 +1,101 @@
+---
+title: "Installation guide"
+output: learnr::tutorial
+highlight: null 
+mathjax: local
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+
+tutorial_options(
+   exercise.cap = "Code",
+   exercise.completion = FALSE,
+   exercise.diagnostics = FALSE,
+   exercise.startover = TRUE)
+```
+
+<style>
+   div.input pre   { color:blue; }
+   div.input pre.r { color:red; }
+</style>
+
+
+## Overview
+
+<div style = "background-color:#d6eaf8; padding:10px">
+<h4><b>Learning objectives</b></h4> 
+In this part of the tutorial, we will guide you through the necessary steps of installing R and RStudio. RStudio is an integrated development environment (IDE) and provides a nice user interface for working with R.
+
+* R and RStudio are installed and ready for use on your computer.
+
+</div>
+
+<h4><b>Prerequisites</b></h4>
+For this part of the tutorial, there are some technical prerequisites concerning your computer.
+
+* First note that you need to have (local) admin rights on your computer in order to install programs such as R or RStudio. For example, if you are using a notebook that is owned by your employer you may have to ask your employer's IT person to give you local admin rights.
+* In most cases, you cannot install R and RStudio on Tablets. Therefore, make sure to use a laptop or desktop computer.
+
+## Installing R
+
+We first install the software R. It is important that you precisely follow the installation steps below:
+
+1. Go to the following page: [https://www.r-project.org/](https://www.r-project.org/)
+
+2. On this page, click "download R":
+
+<img src="images/r-project.PNG" alt="r-project" width="500"/>
+
+3. We recommend to select the Swiss CRAN mirror provided by ETH Zurich:
+
+<img src="images/cran-mirror.PNG" alt="cran-mirror" width="300"/>
+
+4. Now you should select the correct R version to download depending on your operating system that we abbreviate with OS (most of you will probably have Windows or Mac OS). For example, if you have a Windows machine, then click **Download R for Windows**. If you have a Mac, then click **Download R for (Mac) OS X**:
+
+<img src="images/r-os.PNG" alt="select-os" width="500"/>
+
+5. In the next step, the instructions are slightly different depending on the OS on your machine:
+
+   + If you have a Windows machine, you can now click the link **install R for the first time**: <br>
+   <img src="images/r-for-win.PNG" alt="install-r-for-first-time" width="450"/>
+   
+   + You can then click **Download R 4.0.3 for Windows** to download the installation file. Note that the version number of your R installation may be a different one than 4.0.3: <br>
+   <img src="images/downloadRWin.PNG" alt="download-r-for-win" width="300"/>
+   
+   + If you have a Mac you can directly click the link for the installation file:
+   <img src="images/r-for-mac.PNG" alt="download-r-mac" width="450"/>
+
+6. After you downloaded the R installation file, you need to navigate to the installation file on your computer and you need to execute it:
+
+   + On a Windows machine, the file will most likely be in your Downloads folder. It will be a file that looks like **R-4.0.3-win.exe** (note that the version number 4.0.3. may be a different one in your case): <br>
+   <img src="images/exefile.PNG" alt=".exe file" width="450"/>
+   
+   + On a Mac, the file will probably also be in your Downloads folder. It will be a file that looks like **R-4.0.3.pkg** (note that the version number 4.0.3. may be a different one in your case): <br>
+   <img src="images/pkgfile.PNG" alt=".exe file" width="450"/>
+   
+   + In both cases (Windows or Mac), you can now double-click the file (.exe or .pkg) to execute the installation file. There will be a prompt that guides you through the installation. It is okay to accept all default settings.
+   
+7. R should now be installed on your computer. In some cases, you need to restart your computer in order to work with R. Your computer will tell you if that is necessary.
+
+## Installing RStudio
+
+After installing R, we now want to install RStudio (our user interface for working with R). Please follow the steps below:
+
+1. Go to the following page: [https://rstudio.com/](https://rstudio.com/)
+
+2. At the top of their homepage, RStudio has a link **Downloads** which you can click: <br>
+
+<img src="images/rstudio-web.PNG" alt="RStudio Homepage" width="500"/>
+
+3. Now, scroll down until you see **All Installers** and select the installation file according to your operating system. This will download a **.exe** file on Windows machines or a **.pkg** file on Mac: <br>
+
+<img src="images/allinstallers.PNG" alt="All Installers" width="500"/>
+
+4. As before when we installed R, you will need to go to your Downloads folder on your computer and double-click the installation file (.exe or .pkg). This will open a prompt that guides you through the installation of RStudio.
+
+5. As with R, your computer may require a restart before you can use the program.
+
+6. We can now open RStudio and start working. Note: RStudio will communicate with R in the background. Hence, you will not need to open R itself. You can open RStudio by clicking on the RStudio icon. <br>
+<img src="images/icon.PNG" alt="RStudio icon" width="75"/>
