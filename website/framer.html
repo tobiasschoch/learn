@@ -60,6 +60,10 @@
    <iframe id="iframer" border=0 src="" width="100%" height="80%" scrolling="yes" noresize frameborder="0" onload="document.getElementById('spinner').style.display='none';"></iframe>
    <!-- IFRAME IFRAME IFRAME IFRAME IFRAME IFRAME IFRAME IFRAME IFRAME IFRAME --> 
 
+   <!-- Note: We have already specified the port = 50111. The address (provided 
+      to location.search.substring must start with /sample-apps/[name], e.g. 
+      /sample-apps/basic
+    -->
    <script>
       document.getElementById("iframer").src = "http://10.51.6.148:50111" + location.search.substring(1);
    </script>

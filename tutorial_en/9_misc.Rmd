@@ -1,0 +1,249 @@
+---
+title: "Intermediate R"
+output: learnr::tutorial
+highlight: null 
+mathjax: local
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+
+tutorial_options(
+   exercise.cap = "Code",
+   exercise.completion = FALSE,
+   exercise.diagnostics = FALSE,
+   exercise.startover = TRUE)
+```
+
+<style>
+   div.input pre   { color:blue; }
+   div.input pre.r { color:red; }
+</style>
+
+## Matrices
+
+So far, we have strongly focused on vectors. Another important data structure that is used a bit less often than vectors are matrices. The main difference is that a vector is a one-dimensional data structure whereas a matrix is a two-dimensional data structure. In math notation, we would write a (row) vector as $x=[3\;\; 4\;\; 1\;\; 2\;\; 10]$. A matrix would be written as 
+
+$A = \begin{bmatrix}
+1 & 2 & 3\\
+4 & 5 & 6
+\end{bmatrix}.$
+
+As before with the factors, R treats a matrix internally as a vector with some special attributes that let all functions know that it should be treated as a matrix. For us, this does not matter at all. We treat vectors and matrices as two different data structures. Importantly, as with vectors, a matrix can only contain data of one type and we cannot mix different data types (e.g., doubles and characters).
+
+### Creating a matrix
+
+In order to create a matrix, we can use the R function `matrix()`. The function arguments we need to provide are the following:
+
+* `data`: a vector with data that should be organized as a matrix.
+* `nrow`: the number of rows of the matrix.
+* `ncol`: the number of columns of the matrix.
+* `byrow`: if this is set to `TRUE`, the matrix will be filled by rows, otherwise by columns.
+
+An example will help us to understand this function:
+
+<div class = "input">
+```{r, comment = ""}
+(A <- matrix(c(1, 2, 3, 4, 5, 6), nrow = 2, ncol = 3, byrow = TRUE))
+```
+</div>
+
+First of all, note that in the code block above, we use parentheses `()` around the whole expression in order to force R to print `A` but also to store `A` in the workspace. Importantly, the number of elements in the `data` vector is 6, just like the product of the two dimensions ($2*3$). In contrast to what you might expect, R will also be able to create a matrix if the number of elements we provide is not equal to the product of the dimensions (although R may print a warning message). This can cause undesired outcomes, so be careful when specifying the dimensions. Also note that the matrix is filled by rows.
+
+Finally, we can combine matrices with the two functions `cbind()` (combine columns) and `rbind()` (combine rows). For example, let's add a column to `A`:
+
+<div class = "input">
+```{r, comment = ""}
+(A <- cbind(A, c(10, 10)))
+```
+</div>
+
+We will now have a quick look at some R functions that are important when we work with matrices. If you want to check the dimensions of your matrix, you can use the functions `nrow()` and `ncol()`. Or more generally, if you want to check whether some object is actually a matrix, you can "ask" R as follows:
+
+<div class = "input">
+```{r, comment = ""}
+is.matrix(A)
+```
+</div>
+
+At some point you might want to compute the transpose of a matrix. You might remember from your math class what the transpose of a matrix is (otherwise, look it up [here](https://en.wikipedia.org/wiki/Transpose)). Let's compute the transpose of `A`:
+
+<div class = "input">
+```{r, comment = ""}
+t(A)
+```
+</div>
+
+### Accessing elements of a matrix
+
+In contrast to vectors, where you access individual elements by one index, you will need two indices to retrieve individual elements of a matrix. The first index will specify which row to select and the second index will specify which column to select. For example, if you want to retrieve the third element in the second row of `A`, you can code the following:
+
+<div class = "input">
+```{r, comment = ""}
+A[2, 3]
+```
+</div>
+
+If you want to access the full first row, you code:
+
+<div class = "input">
+```{r, comment = ""}
+A[1, ]
+```
+</div>
+
+The procedure for retrieving full columns is equivalent except for you specify the second index and leave the first one empty.
+
+### Your turn
+
+```{r, "mat1", exercise = TRUE}
+# Adjust the code so that a 2x3 matrix is created that is filled by columns instead of by rows.
+# Compare the result to the matrix we created above.
+A <- matrix(c(1, 2, 3, 4, 5, 6))
+```
+
+```{r "mat1-solution"}
+A <- matrix(c(1, 2, 3, 4, 5, 6), nrow = 2, ncol = 3, byrow = FALSE)
+print(A)
+```
+
+```{r, "mat2", exercise = TRUE}
+# Use the solution from the previous exercise. Add a new row 'c(7, 8, 9)'.
+```
+
+```{r "mat2-solution"}
+A <- matrix(c(1, 2, 3, 4, 5, 6), nrow = 2, ncol = 3, byrow = FALSE)
+A <- rbind(A, c(7, 8, 9))
+print(A)
+```
+
+```{r, "mat3", exercise = TRUE}
+# Use the solution from the previous exercise. Replace the first row of the matrix with 'c(10, 10, 10)'.
+```
+
+```{r "mat3-solution"}
+A <- matrix(c(1, 2, 3, 4, 5, 6), nrow = 2, ncol = 3, byrow = FALSE)
+A <- rbind(A, c(7, 8, 9))
+A[1, ] <- c(10, 10, 10)
+print(A)
+```
+
+### Quiz
+
+```{r, "mat_mc1", echo = FALSE}
+question("Assume we have a matrix A. `A[, 2]` will retrieve ...",
+  answer("the second row of A."),
+  answer("the second column of A.", correct = TRUE),
+  answer("the value of the second column in the second row."),
+  answer("the full matrix A."),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
+)
+```
+
+```{r, "mat_mc2", echo = FALSE}
+question("What is the result of `matrix(c(1,2,3,4), nrow = 2, ncol = 1, byrow = FALSE)`",
+  answer("A 2x2 matrix."),
+  answer("A vector of length 1."),
+  answer("The product of the two dimensions does not match the length of the data. R will output an error."),
+  answer("A 2x1 matrix.", correct = TRUE, message = "Somewhat counterintuitively, R will simply ignore the last two values of the data input (3 and 4) and will create a 2x1 matrix with the values 1 and 2."),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
+)
+```
+
+## Lists
+
+In this section, we will briefly learn about lists. In contrast to vectors, lists can store elements of different data types. This is the main reason why we might need to use a list instead of a vector. Lists are not usually needed for basic statistic computations, but it is still useful to know about them.
+
+### Creating a list
+
+To create a list, we can use the `list()` function and provide all elements that should go into the list as function arguments. For example, we might want to put the last names `lname` and the prices `price` into a list:
+
+<div class = "input">
+```{r, comment = ""}
+l <- list(lname, price)
+```
+</div>
+
+If we want to get an overview of how `l` looks, we can use the `str()` function (short for structure):
+
+<div class = "input">
+```{r, comment = ""}
+str(l)
+```
+</div>
+
+The list `l` contains a vector of characters as the first element and a vector of doubles as the second element.
+
+As before, we can verify that `l` is actually a list with `is.list()`.
+
+<div class = "input">
+```{r, comment = ""}
+is.list(l)
+```
+</div>
+
+### Accessing elements of a list
+
+Retrieving (accessing) elements from a list is slightly different than in the case of vectors. If we use single square brackets `[]`, we actually retrieve a list with just the elements specified in the square brackets. For example:
+
+<div class = "input">
+```{r, comment = ""}
+str(l[1])
+```
+</div>
+
+We can see that we get a so called *slice* of a list which is itself a list with only one element.
+
+However, if we use double square brackets `[[]]`, we will retrieve the list element itself. Importantly, with this notation we can only extract one single list element. Doing otherwise will lead to unexpected behavior (use `c(1, 2)` within the double square brackets and see what happens!).
+
+<div class = "input">
+```{r, comment = ""}
+str(l[[1]])
+```
+</div>
+
+Instead of a list, we now get the character vector itself.
+
+### Your turn
+
+```{r, "lis1", exercise = TRUE}
+# Convert the vector x into a list. Inspect the list's structure.
+x <- c(1, 2, 3, 4) 
+```
+
+```{r "lis1-solution"}
+x <- c(1, 2, 3, 4)
+l <- as.list(x)
+str(l)
+```
+
+```{r, "lis2", exercise = TRUE}
+# As above, we create a list l with the two vectors 'lname' and 'price'.
+# Now, use 'c(1,2)' within the double brackets and see what happens.
+lname <- c('Müller', 'Sutter', 'Zuber', 'Allen', 'Allen')
+price <- c(350.20, 350.20, 544.10, 210.50, 30.00)
+l <- list(lname, price)
+```
+
+```{r "lis2-solution"}
+lname <- c('Müller', 'Sutter', 'Zuber', 'Allen', 'Allen')
+price <- c(350.20, 350.20, 544.10, 210.50, 30.00)
+l <- list(lname, price)
+l[[c(1, 2)]]
+```
+
+### Quiz
+
+```{r, "lis_mc1", echo = FALSE}
+question("What is the main difference between vectors and lists?",
+  answer("Lists are easier to work with than vectors."),
+  answer("Lists can store more elements than vectors."),
+  answer("All elements of a vector must have the same data type. Elements of lists can be of different data types.", correct = TRUE),
+  answer("There is no difference. Lists and vectors are the same."),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
+)
+```

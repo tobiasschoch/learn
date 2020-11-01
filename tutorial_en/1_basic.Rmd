@@ -8,6 +8,7 @@ runtime: shiny_prerendered
 
 ```{r setup, include=FALSE}
 library(learnr)
+
 tutorial_options(
    exercise.cap = "Code",
    exercise.completion = FALSE,
@@ -538,7 +539,7 @@ Note that the default working directory might look like that (at least if you ar
 
 However, we might have all our files nicely organized at the following location: `C:\Users\kim.muster\Documents\my-project` (Figure 1).
 
-![Figure 1: Windows Explorer](WindowsExplorer_schematic.png){#id .class width=60% height=60%}
+![Figure 1: Windows Explorer](images/WindowsExplorer_schematic.png){#id .class width=60% height=60%}
 
 How can we set the working directory to the location where all my files are? The following code will do the trick:
 

@@ -8,6 +8,7 @@ runtime: shiny_prerendered
 
 ```{r setup, include=FALSE}
 library(learnr)
+
 tutorial_options(
    exercise.cap = "Code",
    exercise.completion = FALSE,
@@ -48,6 +49,7 @@ dwh <- data.frame(
   price = c(350.20, 350.20, 544.10, 210.50, 30.00),
   payment = c('Credit card', 'Postcard', 'Credit card', 'Invoice', 'Invoice')
 )
+
 head(dwh)
 ```
 
@@ -270,6 +272,7 @@ Imagine you conduct a survey in a company and get a sample of $n=31$ participant
 gender <- c('m', 'm', 'm', 'm', 'm', 'm', 'f', 'f', 'f', 'f', 'm',
             'm', 'm', 'f', 'm', 'm', 'f', 'm', 'f', 'm', 'm', 'm',
             'm', 'm', 'f', 'm', 'm', 'm', 'f', 'f', 'f')
+
 wage <- c(16, 21, 22, 23, 23, 23, 24, 24, 25, 25, 25,
           25, 25, 26, 26, 26, 27, 27, 28, 28, 28, 29,
           29, 29, 30, 30, 30, 32, 34, 34, 35)

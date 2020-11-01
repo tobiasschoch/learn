@@ -1,0 +1,36 @@
+---
+title: "leaRn Tutorial"
+output: learnr::tutorial
+runtime: shiny_prerendered
+css: leaRn.css
+---
+
+## 1 Overview: What is R? 
+
+Welcome to the leaRn tutorial. In this tutorial, you learn what the R software for statistical computing and graphics is. Watch the following introductory video.
+
+![](https://youtu.be/3violRIWo38)
+
+## 2 The R console
+The R console plays a key role when we work with the R software. Watch the following video to learn more.
+
+![](https://youtu.be/nrMekWkgi3g)
+
+## 3 The R help system 
+
+There are two main types of tutorial documents:
+
+* Tutorials which are mostly narrative and/or video content which also include some runnable code chunks. These documents are very similar to vignettes in that their principal goal is communicating concepts. The interactive tutorial features are then used to allow further experimentation by the reader.
+
+* Tutorials which provide a structured learning experience with multiple exercises, quiz questions, and tailored feedback.
+
+The first type of tutorial is of course much easier to author while still being very useful. These documents will typically add 
+
+```{r addition, exercise=TRUE}
+1 + 1
+```
+
+## 4 More
+
+
+
