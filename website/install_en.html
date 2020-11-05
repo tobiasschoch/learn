@@ -84,11 +84,12 @@
       <br>
 
       <h1>Installation of base R</h1>
-      <p>For this part of the tutorial, there are some technical prerequisites concerning your computer.
+      <p>This manual walks you through the installation of the R statistical software for personal computers and laptops on the following platforms:
 	 <ul>
-	    <li>First note that on Microsoft Windows you need to have (local) admin rights on your computer in order to install R. For example, if you are using a notebook that is owned by your employer you may have to ask your employer's IT person to give you local admin rights.</li>
-	    <li>In most cases, you cannot install R and RStudio on Tablets. Therefore, make sure to use a laptop or desktop computer.</li>
+	    <li>Microsoft Windows</li>
+	    <li>Apple Mac OS X</li>
 	 </ul>
+	 R is also available for Linux; see <a href="https://cran.r-project.org/">https://cran.r-project.org/</a>. 
       </p>
 
       <div class="bs-callout bs-callout-danger">
@@ -96,12 +97,12 @@
 	   <path fill-rule="evenodd" d="M7.938 2.016a.146.146 0 0 0-.054.057L1.027 13.74a.176.176 0 0 0-.002.183c.016.03.037.05.054.06.015.01.034.017.066.017h13.713a.12.12 0 0 0 .066-.017.163.163 0 0 0 .055-.06.176.176 0 0 0-.003-.183L8.12 2.073a.146.146 0 0 0-.054-.057A.13.13 0 0 0 8.002 2a.13.13 0 0 0-.064.016zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z"/>
 	   <path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995z"/>
 	 </svg>
-	 <b>The installation is different for Microsoft Windows and Apple Mac OS users!</b>
+	 <b>The installation is different for <a href="#installwindows">Microsoft Windows</a> and <a href="#installmac">Apple Mac OS X</a> users!</b>
       </div>
 
       <br>
 
-      <h2>Microsoft Windows</h2> 
+      <h2 id="installwindows">Microsoft Windows</h2> 
       <p> It is assumed that you have Microsoft Windows <b data-toggle="tooltip" title="To figure out the version go to: Start button -> Settings -> System -> Info">versions</b> 7, 8.1, 8.2 or 10. <b data-toggle="tooltip" title="Please contact your statistics lecturer">Any problems?</b> 
       </p>
       <p>
@@ -119,14 +120,15 @@
 	       <li>Select <b data-toggle="tooltip" title="The folder 'R' is added to the start menu">start menu</b> folder: Do not change the default settings; click on <span>next</span></li> 
 	       <li>Select <b data-toggle="tooltip" title="Additional tasks are not relevant for us.">additional tasks</b>: Do not change the default settings; click on <span>next</span></li> 
 	    </ol>
-	    <li>Now, R is being installed...</li>
+	    <li>Now, R is being installed... </li> 
+	    <li>Once R has been installed, we want to test if it runs properly (see <b><a href="#testing">here</a></b>)</li>
 	 </ul>
       </p>
 
  
       <br>
 
-      <h2>Apple Mac OS X</h2> 
+      <h2 id="installmac">Apple Mac OS X</h2> 
       <p> It is assumed that you have Mac OS X <b data-toggle="tooltip" title="To figure out the version, click on the Apple icon (top left corner of the screen) and select 'About This Mac'. A window should pop up with version information">version 10.6</b> (Snow Leopard) or <b data-toggle="tooltip" title="This includes: 10.6 (Snow Leopard), 10.7 (Lion), 10.8 (Mountain Lion), 10.9 (Mavericks), 10.10 (Yosemite), 10.11 (El Capitan), 10.12 (Sierra), 10.13 (High Sierra), 10.14 (Mojave), 10.15 (Catalina)">above</b>. If you have Mac OS X version 10.4 (Tiger) or older, consider upgrading your Mac OS X; see <a href="https://www.apple.com/macos/how-to-upgrade/">How to upgrade (www.apple.com)</a>.
       </p>
 
@@ -144,15 +146,16 @@
 	       <li>Select <b data-toggle="tooltip" title="Additional tasks are not relevant for us.">additional tasks</b>: Do not change the default settings; click on <span>next</span></li> 
 	    </ol>
 	    <li>Now, R is being installed...</li>
+	    <li>Once R has been installed, we want to test if it runs properly (see <b><a href="#testingmac">here</a></b>)</li>
 	 </ul>
       </p>  
  
       <br>
 
-      <h1>Testing R</h1>
+      <h1 id="testing">Testing R</h1>
       <p>Let's check whether base R has been properly installed.</p>
 
-      <h2>Microsoft Windows</h2> 
+      <h2 id="testingwindows">Testing R on Microsoft Windows</h2> 
       <p>
 	 <ol>
 	    <li>Go to the start menu and check whether the following two programs are there (in Section 'R' of all listed programs)</li>
@@ -164,19 +167,29 @@
 	    <li><b>Fine</b>, you have sucessfully installed the base R software.</li>
 	    <li><b>Which one of the two programs shall I use? We recommend to use the <code>x64</code> variant.</b></li>
 	    <li>Now, start R <code>x64</code> 4.0.3 from the start menu. A window titled 'RGui (64-bit) should pop up (see figure, below). This means R is up and running.'</li> 
+	    <img src="img/win.jpg" height="300"></img>
+	    <br>
+	    <li>Ok, let's quit the R program. To this end, go to <code style="color:black;">File</code> in the menu bar and select <code style="color:black;">Exit</code>.</li>	 
+	    <li>A dialog pops up that asks us whether we want to save the workspace. Click on <code style="color:black;">No</code>.</li>	 
+	    <br>
+	    <img src="img/windows_quit.png" height="180"></img>
 	 </ol>
-         <img src="img/win.jpg" height="300"></img>
       </p>
 
       <br>
 
-      <h2>Apple Mac OS X</h2> 
+      <h2 id="testingmac">Testing R on Apple Mac OS X</h2> 
       <p>
 	 <ol>
 	    <li>In the Applications folder, is there an R icon that looks like this <img src="img/Rlogo.png" height="20"></img> ? <i>(If not contact your statistics lecturer)</i></li> 
 	    <li>Double-click on the R icon. A window titled 'R Console' (see figure, below) should pop up. This means R is up and running!</li>
+	    <img src="img/mac.png" height="300"></img>
+	    <br>
+	    <li>Ok, let's quit the R program. To this end, go to <code style="color:black;">File</code> in the menu bar and select <code style="color:black;">Exit</code>.</li>	 
+	    <li>A dialog pops up that asks us whether we want to save the workspace. Click on <code style="color:black;">Don't save</code>.</li>	 
+	    <br>
+	    <img src="img/mac_quit.png" height="150"></img>
 	 </ol>
-         <img src="img/mac.png" height="300"></img>
       </p>
 
       <br>

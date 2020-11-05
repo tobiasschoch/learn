@@ -5,9 +5,6 @@ rm -r learn
 # clone from github
 git clone https://github.com/tobiasschoch/learn.git
 # copy shiny-tutorial files
-cp -r /var/www/html/learn/tutorial_en /opt/shiny-server/samples
-cp -r /var/www/html/learn/tutorial_de /opt/shiny-server/samples
-
-# copy update.sh one level higher
-cp /var/www/html/learn/update.sh /var/www/html/
+cp -r /var/www/html/learn/tutorial_en/ /opt/shiny-server/samples/
+cp -r /var/www/html/learn/tutorial_de/ /opt/shiny-server/samples/
 
