@@ -49,7 +49,6 @@ dwh <- data.frame(
   price = c(350.20, 350.20, 544.10, 210.50, 30.00),
   payment = c('Credit card', 'Postcard', 'Credit card', 'Invoice', 'Invoice')
 )
-
 head(dwh)
 ```
 
@@ -518,10 +517,17 @@ df <- data.frame(
 The `data.frame()` function has the undesired property of treating all character vectors as factors. In the section on factors, we discussed why this may lead to an unwanted outcome. If we add the additional function argument `stringsAsFactors = FALSE`, this behavior can be prevented. With the function `head()`, we can visually inspect the first few rows of our data frame. Let's do that!
 
 <div class = "input">
-```{r, comment=""}
+```{r, comment="", eval = FALSE}
 head(df)
 ```
 </div>
+<div class = "input">
+```{r, comment="", echo = FALSE}
+print(head(df))
+```
+</div>
+
+
 
 This works nicely and we get a first idea of how our data looks. Note that the header contains the column names and to the left we see the row names. We did not specify any row names, so by default, rows will be numbered starting from one. Every row corresponds to a data entry referring to the same object (here, every row corresponds to a purchase by a customer). We can get a more technical view of the dataframe using the function `str()` (which stands for structure):
 
@@ -534,11 +540,19 @@ str(df)
 A common operation with data frames is to add new columns to already existing data frames. Imagine that the column `price` does not contain the correct price because we granted all our customers a 10% discount. We want to add a column with the actual price that was paid, but we also want to keep the original price. How can we do that? 
 
 <div class = "input">
-```{r, comment=""}
+```{r, comment="", eval = FALSE}
 df$price_paid <- df$price * 0.9
 head(df)
 ```
 </div>
+<div class = "input">
+```{r, comment="", echo = FALSE}
+df$price_paid <- df$price * 0.9
+print(head(df))
+```
+</div>
+
+
 
 We see that adding a new column to the data frame simply requires one line of code. The right side of the assign operator `<-` computes a vector of the new prices based on the old prices. The resulting vector is assigned to the new column `price_paid`. With the `$` sign, we can access one column of the data frame by its column name (more on that in the next subsection).
 

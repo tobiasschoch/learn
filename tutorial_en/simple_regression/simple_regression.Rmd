@@ -1,0 +1,336 @@
+---
+title: "Simple linear regression"
+output: learnr::tutorial
+highlight: null 
+mathjax: local
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+
+tutorial_options(
+	exercise.cap = "Code",
+	exercise.completion = FALSE,
+	exercise.diagnostics = FALSE,
+	exercise.startover = TRUE)
+
+	# wage data
+	#----------------------------------
+	n <- 42
+	set.seed(1)
+	# work experience (in years)
+	experience <- round(runif(n, 0.5, 9), 1)
+	# wage (per hour)
+	wage <- round(14.3 + 1.9 * experience + rnorm(n, 0, 1), 1)
+	dat <- data.frame(id = sort(sample(1:300, n)), wage = wage, 
+		experience = experience)
+	rm(n, wage, experience)
+
+	# sales data
+	#----------------------------------
+	restaurant <- data.frame(costs = 
+		c(403, 424, 383, 395, 374, 413, 384, 372, 400, 455, 394, 447, 
+		457, 440, 375, 375, 415, 432, 435, 402, 424, 378, 443, 414, 426, 435, 
+		377, 470, 375, 405, 349, 418, 469, 381, 409, 384, 374, 407, 417, 436, 
+		426, 439, 364, 375, 380, 452, 425, 450, 372, 447, 466, 430, 429, 400, 
+		392, 400, 460, 381, 418, 377, 411, 380, 421, 386, 423, 444, 413, 437, 
+		388, 376, 365, 429, 384, 453, 445, 461, 406, 412, 412, 420, 440, 409, 
+		420, 447, 453, 413, 461, 415, 459, 417, 399, 365, 384, 444, 365, 413, 
+		409, 420, 432, 444, 411, 429, 411, 410, 376, 410, 421, 433, 461, 380, 
+		433, 365, 470, 387, 462, 445, 442, 460, 371, 453),
+	 customers = 
+		c(14.017, 16.256, 13.642, 14.891, 9.457, 14.658, 16.295, 
+		16.012, 14.806, 14.559, 14.695, 17.592, 14.943, 12.229, 15.948, 
+		16.519, 13.544, 14.024, 16.073, 14.345, 15.723, 13.47, 17.899, 
+		17.968, 15.306, 15.192, 14.767, 18.753, 16.597, 12.989, 12.813, 
+		16.349, 17.262, 14.024, 10.704, 14.516, 13.091, 12.977, 13.243, 
+		17.392, 16.741, 16.603, 10.695, 12.581, 15.451, 14.051, 16.093, 
+		13.49, 12.353, 14.959, 11.903, 19.424, 12.771, 14.736, 13.686, 
+		16.429, 14.798, 16.812, 15.544, 11.382, 18.011, 16.707, 13.207, 
+		15.622, 16.95, 14.452, 11.412, 13.195, 9.74, 13.322, 13.051, 
+		16.777, 18.983, 17.073, 17.25, 14.107, 16.781, 14.115, 14.165, 
+		15.26, 19.332, 11.273, 13.632, 14.989, 17.802, 12.407, 15.457, 
+		17.138, 16.953, 12.924, 21.337, 10.061, 12.48, 19.191, 13.806, 
+		15.13, 15.191, 14.835, 15.78, 12.241, 17.501, 16.627, 15.291, 
+		15.521, 16.272, 13.731, 12.454, 16.801, 17.733, 16.501, 14.202, 
+		14.185, 19.385, 14.253, 14.709, 15.028, 14.675, 13.526, 13.93, 19.058)
+)
+```
+
+<style>
+	div.input pre   { color:blue; }
+	div.input pre.r { color:red; }
+</style>
+
+
+## Overview
+
+<div style = "background-color:#d6eaf8; padding:10px">
+<h4><b>Learning objectives</b></h4> 
+In this section, you will learn:
+
+* The estimation of the simple linear regression with the function `lm()`.
+* The application of the `summary()` function to an estimated model.
+* The prediction with the model.
+* How to plot regression diagnostics.
+</div>
+
+<div style = "background-color:#fef9e7; padding:10px"> 
+<h4><b>Case</b></h4>  
+
+The company *SmartPack* produces smart backpacks that can be connected to an app on your phone. Currently, $n=42$ workers are employed at SmartPack's production line. The HR department collected the wages (per hour, variable `wage`) and the work experience (years, variable `experience`) for each worker in the production. The workers can be identified by means of their employee number (variable: `id`). The variables are bundled in the data.frame `dat`.
+
+The first 6 entires of `dat` are shown below. 
+```{r, echo = FALSE, comment = NA}
+print(dat[1:6,])
+```
+
+For all $n=42$ observations, the HR department wants to estimate the linear regression model
+
+$$wage_i = a + b \cdot experience_i + e_i \quad\qquad (i=1,\ldots,42) \tag{1}$$ 
+
+by the least squares method. The $e_i$'s denote the error terms.
+</div>
+
+<h4><b>Prerequisites</b></h4>
+In this section, it is assumed that you know the following R commands: 
+
+* The assignment operator `<-`.
+* The concatenation operator `c()` for the construction of vectors.
+* The `data.frame()` function for the construction of data tables with several variables. 
+
+If your are not familiar with these commands, you are advised to learn the concepts prior to beginning with the current section.
+
+## Estimation
+
+The model in Formula (1) is reproduced here for ease of discussion.  
+
+$$wage_i = a + b \cdot experience_i + e_i \quad\qquad (i=1,\ldots,42) \tag{1}$$ 
+
+The goal is to estimate the unknown parameters $a$ and $b$. To this end, we have to translate Formula (1) from the language of mathematics to the R language. To do so, we use the function 
+
+```{r, eval = FALSE}
+lm(formula, data)
+``` 
+
+where 
+
+* `lm` is an accroynm for *linear model*;
+* in place of argument `formula`, we specify the "translated" Formula in (1); see below;
+* in place of argument `data`, we tell R which data to use.
+
+### A `formula` object
+
+Let´s consider "translating" Formula (1) to the R language. A `formula` **object** in the R language has the following form 
+
+```{r, eval = FALSE}
+LHS ~ RHS
+``` 
+
+where `LHS` and `RHS` denote, respectively, the left-hand and right-hand side of the formula object. The two sides are separated by the tilde `~`. Now, our formula object for the regression of `wage` on `experience` writes as  
+
+```{r, eval = FALSE}
+wage ~ experience
+``` 
+
+Some remarks are in order. 
+
+* The dependent variable (also known as $y$-variable, here `wage`) goes always to the LHS of a formula object. Consequently, the independent variable (also known as explanatory variable; here `experience`) is on the RHS.  
+* The errors $e_i$ in Formula (1) are **not** specified in R´s formula object.
+* The parameters $a$ and $b$ are **not** declared or specified in R´s formula object.
+* The regression intercept or constant is not explicitly mentioned in R´s formula object. R automatically takes care of the regression intercept.  
+
+
+### Estimation of the model parameters 
+
+Now, we are in the position to compute the least squares estimates of the parameters $a$ and $b$ for our data `dat`. This is also called fitting the model to the data. To do so, we specifiy `data = dat` in the call of `lm()`;  like so
+
+<div class = "input">
+```{r, comment = NA}
+lm(wage ~ experience, data = dat)
+``` 
+</div>
+
+From the output of the `lm()` function, we see that the regression intercept (or constant) is $a=14.731$ and the coefficient of the variable `experience` is $b=1.836$. With this, the regression model now writes
+ 
+$$wage_i = 14.731 + 1.836 \cdot experience_i + e_i \quad\qquad (i=1,\ldots,42)$$ 
+
+
+### Assigning the model a name (for future purposes)
+
+It will prove useful to assign the fitted model to an object (loosely speaking: we give it a name). We shall assign the fitted model to the object `m` by means of the assignment operator (`<-`). In the further course of our analyis, we can refer to the model by `m`. This can be achieved with following command: 
+ 
+<div class = "input">
+```{r, comment = NA}
+m <- lm(wage ~ experience, data = dat)
+``` 
+</div>
+
+Our model is now assigned to the object `m`. 
+
+We can print the object `m` to the console to see what´s "behind" the name `m` by typing `m`, like so
+
+<div class = "input">
+```{r, comment = NA}
+m
+``` 
+</div>
+
+### Extracting the coefficient 
+
+We keep working with the model `m`. The estimated regression coefficients (or parameters) can be extracted from model `m` by the `coef()` function.
+
+<div class = "input">
+```{r, comment = NA}
+coef(m)
+``` 
+</div>
+
+
+### Your turn 
+
+*Another case*. A consulting company examined the key business data of 120 restaurants. The analysis focused on the relationship between the restaurants´ costs (variable `costs`, measured in 1\,000 CHF) and the number of customers (variable `customers`, measured in 1\,000 units). The consultants are interested fitting the following regression model 
+
+$$costs_i = a + b \cdot customers_i + e_i \qquad\quad (i= 1,\ldots, 120)$$
+
+to the data stored in the data.frame `restaurant`.
+
+* Compute the least squares estimates of the parameters $a$ and $b$ for the restaurant data.
+* Answer the **quiz questions** below.
+
+```{r, "reg_ex1", exercise = TRUE}
+summary(restaurant)
+```
+
+### Quiz
+
+The quiz questions refer to the restaurant regression.
+
+```{r, "vec_ex_mc1", echo = FALSE}
+question("What is the `formula` object that we define in the `lm()` function for the restaurant regression?",
+  answer("`costs ~ a + b * customers`"),
+  answer("`costs ~ customers`", correct = TRUE),
+  answer("`customers ~ costs`"),
+  answer("`costs = customers`"),
+  answer("`customers ~ costs + error`"),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
+)
+```
+
+```{r, "vec_ex_mc2", echo = FALSE}
+question("What estimate do you get for the regression intercept / constant? ",
+  answer("a = 36.102"),
+  answer("a = 4.441"),
+  answer("a = 348.013", correct = TRUE),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
+)
+```
+```{r, "vec_ex_mc3", echo = FALSE}
+question("We have to explicitly define the regression intercept in the `formula` object. True or false?",
+  answer("TRUE"),
+  answer("FALSE", correct = TRUE, message = "Indeed, R takes automatically care of the intercept term."),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
+)
+```
+
+## Summary statistics 
+
+In Section 'Estimation', we have estimated the model `m`. We keep working with this model. The model `m` can be **summarized** by the `summary` command. 
+
+<div class = "input">
+```{r, comment = NA}
+summary(m)
+``` 
+</div>
+
+The `summary()` function provides a lot of information on the model. For the time being, we are only interested in 
+
+* the `adjusted R-squared`. This is the coefficient of determination $R^2$ and is a measure how good the model fits the data.
+* [All other key figures and measures in the summary output will be studied in a Level 2 tutorial.]
+
+## Prediction
+SmartPack plans to hire two new employees: Alice and Bob. Alice has 10 years of work experience in production and Bob only 1.5 years. The HR department wants to use the fitted model `m` to predict the wages of Alice and Bob.
+
+#### Data preparation 
+
+We define a new `data.frame` that contains the work experience of Alice and Bob. 
+
+<div class = "input">
+```{r, comment = NA}
+new_employees <- data.frame(experience = c(10, 1.5))
+rownames(new_employees) <- c("Alice", "Bob")
+``` 
+</div>
+
+Some remarks are in order.
+
+* The object `new_employees` is a `data.frame`. In consists of only the variable `experience`, which contains the work experience of Alice and Bob `c(10, 1.5)`. 
+* In the second line, we have named the entries for ease of reference. Naming is not mandatory but it is convenient.
+
+Let´s see how `new_employees` looks on print in the console. Thus, by typing `new_employees`, we obtain
+
+<div class = "input">
+```{r, comment = NA, eval = FALSE}
+new_employees
+``` 
+</div>
+
+<div class = "input">
+```{r, comment = NA, echo = FALSE}
+print(new_employees)
+``` 
+</div>
+
+#### Computing the prediction 
+
+Now, we use model `m` to make the prediction given the data on experience (of Alice and Bob) that we have put into `new_employees`. The prediction is computed as follows:
+
+<div class = "input">
+```{r, comment = NA}
+predict(m, newdata = new_employees)
+``` 
+</div>
+
+* Note that the first argument of the `predict()` function is the model; here our fitted model `m`.
+* The second argument is `newdata`. There we specify for what data we want to compute the prediction (in our case: `new_employees`).
+
+Alright, we conlcude that Alice is about to earn CHF 33.10 per hour because she has a lot of work experience. Bob is rather inexperienced; thus, the HR department will offer him an hourly wage of CHF 17.50.
+
+## Diagnostic plots 
+
+In this paragraph, we introduce two diagonostic plots
+
+* Residuals vs. fitted (`which = 1`)
+* Quantile-quantile plot of the residuals (QQ-plot, `which = 2`)
+
+Both plots are called with the `plot()` function 
+
+<div class = "input">
+```{r, eval = FALSE}
+plot(model, which = number)
+```
+</div>
+
+where 
+
+* `model` is a placeholder for the estimated model, 
+* and in place of `number` we write either the number `1` for the residual vs. fitted plot or `2` for the QQ-plot. 
+
+### Residuals vs. fitted
+
+In Section 'Estimation', we have estimated the model `m`. We keep working with this model. The residuals vs. fitted plot is called by the following command:
+
+```{r, comment = NA}
+plot(m, which = 1)
+``` 
+
+### Quantile-quantile plot of the residuals (QQ-plot)
+
+```{r, comment = NA}
+plot(m, which = 2)
+``` 
+

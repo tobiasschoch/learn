@@ -1,140 +1,160 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
-   <meta charset="utf-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-   <!-- FHNW Styleguide CSS -->
-   <link rel="stylesheet" href="css/fhnw-1.1.0.min.css">
+	<!-- FHNW Styleguide CSS -->
+	<link rel="stylesheet" href="css/fhnw-1.1.0.min.css">
 
-   <title>leaRn</title>
+	<title>leaRn</title>
 
-   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-   <script type="text/javascript" src="js/jquery-3.5.1.min.js"></script>
-   <script type="text/javascript" src="js/popper-1-14-7.min.js"></script>
-   <!-- TS: July 30, 2020: I tried popper v2, but cards cannot be opened... -->
-   <script type="text/javascript" src="js/bootstrap-4-5-0.min.js"></script>
-   <script type="text/javascript" src="js/javascript.util-0-12-12.min.js"></script>
-   <script type="text/javascript" src="js/select2-4-0-13.min.js"></script>
-   <script type="text/javascript" src="js/styleguide-customs.js"></script>
-  
-   <script>
-      <!-- script use to impute the navbar navigation -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script type="text/javascript" src="js/jquery-3.5.1.min.js"></script>
+	<script type="text/javascript" src="js/popper-1-14-7.min.js"></script>
+	<!-- TS: July 30, 2020: I tried popper v2, but cards cannot be opened... -->
+	<script type="text/javascript" src="js/bootstrap-4-5-0.min.js"></script>
+	<script type="text/javascript" src="js/javascript.util-0-12-12.min.js"></script>
+	<script type="text/javascript" src="js/select2-4-0-13.min.js"></script>
+	<script type="text/javascript" src="js/styleguide-customs.js"></script>
 
-      <!-- insert navbar -->
-      $(function(){
-      $("#nav-placeholder").load("navigation.html");
-      });
+	<script>
+		<!-- script use to impute the navbar navigation -->
 
-      <!-- insert footer -->
-      $(function(){
-      $("#footer-placeholder").load("footerEN.html");
-      });
+		<!-- insert navbar -->
+			$(function(){
+			$("#nav-placeholder").load("navigation.html");
+		});
 
-      <!-- manually collapse an element by id -->
-      $(document).ready(function(){
-	  $("#button_level1").click(function(){
-	      $("#level1").collapse('toggle');
-	  });
-      });
-      $(document).ready(function(){
-	  $("#button_level2").click(function(){
-	      $("#level2").collapse('toggle');
-	  });
-      });
-      $(document).ready(function(){
-	  $("#button_level3").click(function(){
-	      $("#level3").collapse('toggle');
-	  });
-      });
-   </script>
+		<!-- insert footer -->
+			$(function(){
+			$("#footer-placeholder").load("footerEN.html");
+		});
+
+		<!-- manually collapse an element by id -->
+		$(document).ready(function(){
+			$("#button_level1").click(function(){
+				$("#level1").collapse('toggle');
+			});
+		});
+		$(document).ready(function(){
+			$("#button_level2").click(function(){
+				$("#level2").collapse('toggle');
+			});
+		});
+		$(document).ready(function(){
+			$("#button_level3").click(function(){
+				$("#level3").collapse('toggle');
+			});
+		});
+		$(document).ready(function(){
+			$("#button_install").click(function(){
+				$("#install").collapse('toggle');
+			});
+		});
+	</script>
 </head>
 
 <body>
+	<div id="nav-placeholder"></div>
+	<!-- CONTENT  -->
+	<div class="container mt-5 pb-5">
+		<h1>leaRn tutorials</h1>
+		<p class="text__lead">English</p>
 
-   <div id="nav-placeholder"></div>
+		<br>
 
-   <!-- CONTENT  -->
-   <div class="container mt-5 pb-5">
-      <h1>leaRn tutorials</h1>
-      <p class="text__lead">English</p>
+		<h2>Introduction</h2>
+		<p>The tutorials are organized by three levels. We recommend to start with level 1. Students in MSc programs can do all three levels on their own.</p>
 
-      <br>
+		<br>
 
-      <h2>Introduction</h2>
-      <p>This online tutorial</p>
+		<h2>Level 1 <button id="button_level1" type="button" class="btn btn-secondary btn-sm"> show/ hide</button></h2>
+		<div id="level1" class="collapse hidden">
+			<div class="row">
+				<div class="col-sm-4">
+					<div class="card border border-light">
+						<div class="card-body">
+							<h4 class="card-title">1.1 Introduction</h4>
+							<p class="card-text">What is R? Who uses R? Why should I switch from Microsoft Excel to R?</p>
+							<a href="framer.html?/tutorial_en/intro" class="btn btn-secondary btn-sm">Go</a>
+						</div>
+					</div>
+				</div>
+				<!-- next -->
+				<div class="col-sm-4">
+					<div class="card border border-light">
+						<div class="card-body">
+							<h4 class="card-title">1.2 Console &amp help system</h4>
+							<p class="card-text">Console, scripts, loading and saving workspaces, and the help system</p>
+							<a href="framer.html?/tutorial_en/basic" class="btn btn-secondary btn-sm">Go</a>
+						</div>
+					</div>
+				</div>
+				<!-- next -->
+				<div class="col-sm-4">
+					<div class="card border border-light">
+						<div class="card-body">
+							<h4 class="card-title">1.3 The basics</h4>
+							<p class="card-text">Arithmetic operations, working with variables, and numeric vectors.</p>
+							<a href="framer.html?/tutorial_en/basics" class="btn btn-secondary btn-sm">Go</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- next row -->
+			<div class="row mt-3">
+				<!-- next -->
+				<div class="col-sm-4">
+					<div class="card border border-light">
+						<div class="card-body">
+							<h4 class="card-title">1.4 Data structures I</h4>
+							<p class="card-text">Character and logical vectors, factors, and data frames</p>
+							<a href="framer.html?/tutorial_en/data_structures_1" class="btn btn-secondary btn-sm">Go</a>
+						</div>
+					</div>
+				</div>
+				<!-- next -->
+				<div class="col-sm-4">
+					<div class="card border border-light">
+						<div class="card-body">
+							<h4 class="card-title">1.5 Simple linear regression</h4>
+							<p class="card-text">Regression estimation, prediction, and diagnostic plots</p>
+							<a href="framer.html?/tutorial_en/simple_regression" class="btn btn-secondary btn-sm">Go</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-      <br>
+		<br>
 
-      <h2>Level 1 <button id="button_level1" type="button" class="btn btn-secondary btn-sm"> show/ hide</button></h2>
-      <div id="level1" class="collapse hidden">
-	 <div class="row">
-	    <div class="col-sm-4">
-	       <div class="card border border-light">
-		  <div class="card-body">
-		     <h4 class="card-title">1.1 Introduction</h4>
-		     <p class="card-text">A short introduction to R.</p>
-		     <a href="framer.html?/sample-apps/intro" class="btn btn-secondary btn-sm">Go</a>
-		  </div>
-	       </div>
-	    </div>
-	    <!-- next -->
-	    <div class="col-sm-4">
-	       <div class="card border border-light">
-		  <div class="card-body">
-		     <h4 class="card-title">1.2 The basics</h4>
-		     <p class="card-text">Arithmetic operations, working with variables and numeric vectors.</p>
-		     <a href="framer.html?/sample-apps/basic" class="btn btn-secondary btn-sm">Go</a>
-		  </div>
-	       </div>
-	    </div>
-	    <!-- next -->
-	    <div class="col-sm-4">
-	       <div class="card border border-light">
-		  <div class="card-body">
-		     <h4 class="card-title">1.3 Data structures</h4>
-		     <p class="card-text">Character and logical vectors, factors, and data frames</p>
-		     <a href="framer.html?/sample-apps/intermediate" class="btn btn-secondary btn-sm">Go</a>
-		  </div>
-	       </div>
-	    </div>
-	 </div>
-	 <!-- next row -->
-	 <div class="row mt-3">
-	    <div class="col-sm-4">
-	       <div class="card border border-light">
-		  <div class="card-body">
-		     <h4 class="card-title">1.4 [empty]</h4>
-		     <p class="card-text">[empty]</p>
-		     <a href="" class="btn btn-secondary btn-sm">Go</a>
-		  </div>
-	       </div>
-	    </div>
-	 </div>
-      </div>
+		<h2>Level 2 <button id="button_level2" type="button" class="btn btn-secondary btn-sm"> show/ hide</button></h2>
+		<div id="level2" class="collapse hidden">
+			<p>[empty]</p>
+		</div>
 
-      <br>
+		<br>
 
-      <h2>Level 2 <button id="button_level2" type="button" class="btn btn-secondary btn-sm"> show/ hide</button></h2>
-      <div id="level2" class="collapse hidden">
-	 <p>[empty]</p>
-      </div>
+		<h2>Level 3 <button id="button_level3" type="button" class="btn btn-secondary btn-sm"> show/ hide</button></h2>
+		<div id="level3" class="collapse hidden">
+			<p>[empty]</p>
+		</div>
 
-      <br>
+		<br>
 
-      <h2>Level 3 <button id="button_level3" type="button" class="btn btn-secondary btn-sm"> show/ hide</button></h2>
-      <div id="level3" class="collapse hidden">
-	 <p>[empty]</p>
-      </div>
+		<h2>Installation of the R software <button id="button_install" type="button" class="btn btn-secondary btn-sm"> show/ hide</button></h2>
+		<div id="install" class="collapse hidden">
+			<p>
+				We show you how to install the R software on your desktop computer or laptop.
+				<ul>
+					<li>For <b>Microsoft Windows</b>, follow this <a href="install_en_win.html" style="color:blue"><b>link</b></a></li>
+					<li>For <b>Apple Mac OS</b>, follow this <a href="install_en_mac.html" style="color:blue;"><b>link</b></a></li>
+				</ul>
+			</p>
+		</div>
 
-      <br>
-
-      <h2>Installation of the R software</h2>
-      <p>We show you how to install the R software on your desktop computer or laptop; follow this <a href="install_en.html">link</a>.</p>
-
-   </div> <!-- end container -->
-
-   <div id="footer-placeholder"></div>
-
+	</div> <!-- end container -->
+	<div id="footer-placeholder"></div>
 </body>
 </html>
