@@ -1,0 +1,374 @@
+---
+title: "Statistical Tests in R"
+output: learnr::tutorial
+highlight: null 
+mathjax: local
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+
+tutorial_options(
+   exercise.cap = "Code",
+   exercise.completion = FALSE,
+   exercise.diagnostics = FALSE,
+   exercise.startover = TRUE)
+
+   # amount spent in web shop
+	 #----------------------------------
+	 n <- 100
+	 set.seed(1)
+	 dat <- data.frame(id = sort(sample(1:300, n)), amount_spent = round(rnorm(n, 352, 44)), 
+	                   gender = factor(sample(c('m','f'), 10, replace = TRUE)))
+	 rm(n)
+```
+
+<style>
+   div.input pre   { color:blue; }
+   div.input pre.r { color:red; }
+</style>
+
+
+## Overview
+
+<div style = "background-color:#d6eaf8; padding:10px">
+<h4><b>Learning objectives</b></h4> 
+This course will introduce $t$-tests and how we compute them in R. More specifically, the learning objectives are as follows:
+
+* One-sample $t$-tests
+* Two-sample $t$-tests
+* How to compute the one-sample and two-sample $t$-test in R.
+
+</div>
+
+<div style = "background-color:#fef9e7; padding:10px"> 
+<h4><b>Case</b></h4>  
+
+The company *SmartPack* produces smart backpacks that can be connected to an app on your phone. The company wants to analyze the average amount a customer spent in the online shop for their most recent purchase. For this reason the analysts at SmartPack randomly drew a sample of $n=100$ customers from their CRM system. Moreover, the analysts at the company would like to know whether men spend more on average than women. The first 6 observations in the sample look as follows:
+
+```{r, echo=FALSE}
+print(dat[1:6,])
+```
+
+In this tutorial, we will learn how to compute a one-sample and two-sample $t$-test in R for datasets such as the one in the example.
+
+</div>
+
+<h4><b>Prerequisites</b></h4>
+In this section, it is assumed that you know the following R commands: 
+
+* All R basics (see Tutorial 1.3)
+* All commands related to working with dataframes (see Tutorial 1.4)
+
+If you are not familiar with these commands, you are advised to learn the concepts prior to beginning with the current section.
+
+## One-sample $t$-test
+
+The one-sample $t$-test is used if we want to compare the mean value of some variable (here, the amount spent on the last purchase) to a hypothetical value for the mean. We usually denote this hypothetical mean value as $\mu_0$. In other words, we want to test if the average amount spent on the last purchase is equal to $\mu_0$ or if it deviates from it significantly.
+
+In our case, $\mu_0$ may be the value that the analysts at SmartPack expect based on past data and experience, let's say that $\mu_0=340$ Swiss Franks. We now want to find out whether our current customers can still be characterized as spending on average 340 Swiss Franks in the online shop.
+
+First, we will have a look at some simple descriptive statistics (the data are stored in a dataframe `dat`:
+
+<div class = "input">
+```{r, comment = ""}
+summary(dat)
+```
+</div>
+
+We can already see that the sample average amount spent in the online shop is about 353 Swiss Franks and there are exactly 50 men and 50 women in the sample. Let's now go to the next section and think about what exactly we want to test.
+
+### Null hypothesis
+
+There are three possible questions we might want to ask:
+
+* First, is the average amount spent on the last purchase equal to the hypothetical mean $\mu_0=350$? In this case, the null hypothesis would be written as $H_0: \mu = \mu_0$ and the corresponding alternative hypothesis would be $H_A: \mu \neq \mu_0$. This corresponds to a so-called two-tailed $t$-test. In R, we will use the argument `alternative = "two.sided"` to compute this type of $t$-test.
+* But instead, we might wonder whether the average amount spent on the last purchase is less than the hypothetical mean $\mu_0=350$. In that case, the null hypothesis would be $H_0: \mu \leq \mu_0$ and the corresponding alternative hypothesis would be $H_A: \mu > \mu_0$. This corresponds to a one-tailed $t$-test and in R we would specify this with the argument `alternative = "greater"` (note that in R we specify the alternative hypothesis, not the null hypothesis).
+* Finally, we might want to test whether the average amount spent in the online shop is larger than the hypothetical mean $\mu_0=350$. In that case, the null hypothesis would be $H_0: \mu \geq \mu_0$ and the corresponding alternative hypothesis would be $H_A: \mu < \mu_0$. This is also a one-tailed $t$-test and would be specified in R with `alternative = "less"`.
+
+### Assumptions
+
+The first assumption for the $t$-test is that the customers in the sample were sampled randomly from all the customers of SmartPack. Our analysts made sure that this is the case. Secondly, the observations in the sample should also be independent of each other. Since every customer is a different person, we assume this assumption is also satisfied.
+
+Finally, we need to check if the data in the sample are approximately normally distributed. Note that this is mainly important if our sample is small, say $n<30$, and our sample is clearly larger than that. Nevertheless, we quickly check this assumption with a Quantile-Quantile-Plot (or short, QQ-Plot).
+
+<div class = "input">
+```{r, comment = ""}
+qqnorm(dat$amount_spent)
+qqline(dat$amount_spent)
+```
+</div>
+
+Although not perfect, this looks good enough (most points are close to the line). We conclude that the data indeed follow a normal distribution. We are now ready to compute the test.
+
+### One-sample $t$-test in R
+
+The function `t.test()` allows us to compute various types of $t$-tests. The following code shows the typcial use of this function:
+
+<div class = "input">
+```{r, eval = FALSE}
+t.test(x, mu = 0, alternative = "two.sided")
+```
+</div>
+
+The arguments of the function are as follows:
+
+* `x` is a vector with the data. In our example, we will replace `x` with `dat$amount_spent`.
+* `mu` is the hypothetical mean $\mu_0$. By default, it is set to 0. We will need to set `mu = 340`.
+* The argument `alternative` defines the type of alternative hypothesis we are testing (see section 'Null Hypothesis' above).
+
+Ok, so let's test the null hypothesis $H_0: \mu = 340$ vs. the alternative $H_A: \mu \neq 340$. As mentioned above, this corresponds to a two-tailed $t$-test and we have to specify the `alternative` argument accordingly:
+
+<div class = "input">
+```{r, comment = ""}
+# compute the test
+out <- t.test(dat$amount_spent, mu = 340, alternative = "two.sided")
+# show the results
+out
+```
+</div>
+
+The value of the computed test statistic is $3.0557$. The test has $n-1=99$ degrees of freedom (`df`). Most importantly, we see that the p-value is $0.0029$. If we test on a signficance level of $\alpha=0.05$ ($5\%$), we will reject the null hypothesis as the p-value is smaller than $\alpha$. Thus, we can conclude that the current customers on average seem to spend significantly more money than 340 Swiss Franks.
+
+Note that the test output also shows us the $95\%$ confidence interval and the sample mean of the data.
+
+It is possible to extract specific elements from the test output. For example, you can extract the p-value of the test:
+
+<div class = "input">
+```{r, comment = ""}
+# get the p-value
+out$p.value
+```
+</div>
+
+### Alternative test
+
+If your data is not normally distributed, you can instead compute the (non-parametric) Wilcoxon signed rank test. We can use the same three null hypotheses (and corresponding alternative hypotheses) as for the $t$-test.
+
+The code for the Wilcoxon test is almost identical to the code for the $t$-test. We simply replace the function `t.test()` with the function `wilcox.test()`:
+
+<div class = "input">
+```{r, eval = FALSE}
+wilcox.test(x, mu = 0, alternative = "two.sided")
+```
+</div>
+
+
+### Your turn
+
+Now, it's your turn. First, try to compute the $t$-test for the following null hypothesis: $H_0: \mu \geq 340$.
+
+```{r, "t-test1", exercise = TRUE}
+# Compute t-test for H0: mu >= 340
+
+```
+
+```{r "t-test1-solution"}
+# Compute t-test for H0: mu >= 340
+t.test(dat$amount_spent, mu = 340, alternative = "less")
+```
+
+Now, assume that our data is not normally distributed and we have to compute a (two-tailed) Wilcoxon test instead of a $t$-test.
+
+```{r, "t-test2", exercise = TRUE}
+# Instead of the t-test, compute the two-tailed Wilcoxon test
+
+```
+
+```{r "t-test2-solution"}
+# Instead of the t-test, compute the two-tailed Wilcoxon test
+wilcox.test(dat$amount_spent, mu = 340, alternative = "two.sided")
+```
+
+### Quiz
+
+```{r, "t-test_mc1", echo = FALSE}
+question("What are the assumptions of the one-sample t-test? (select ALL that apply)",
+  answer("The data is normally distributed.", correct = TRUE),
+  answer("The data corresponds to a random sample from the population (e.g., all customers)", correct = TRUE),
+  answer("We need at least 100 observations."),
+  answer("The observations in the sample are independent.", correct = TRUE),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
+)
+```
+
+```{r, "t-test_mc2", echo = FALSE}
+question("We run the following code: `t.test(x, mu = 44, alternative = 'less')`. What is the corresponding null hypothesis?",
+  answer("$H_0: \\mu = 44$"),
+  answer("$H_0: \\mu \\leq 44$"),
+  answer("$H_0: \\mu \\geq 44$", correct = TRUE),
+  answer("$H_0: \\mu \\neq 44$"),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
+)
+```
+
+## Two-sample $t$-test
+
+The two-sample $t$-test is used to compare the mean of two independent groups. In our example, we would like to find out whether or not the average amount spent on the last purchase is significantly different between men and women.
+
+Before we compute a test, let's have a look at the two groups in the sample. The column `gender` in the dataframe `dat` is a factor variable:
+
+<div class = "input">
+```{r, comment = ""}
+str(dat)
+```
+</div>
+
+This allows us to use this column to split the data into the two groups (men and women). For example, we can compute some summary statistics for the two groups separately:
+
+<div class = "input">
+```{r, comment = ""}
+by(dat$amount_spent, dat$gender, summary)
+```
+</div>
+
+In our sample, men tend to spend a bit more on average than women. If we want to analyze possible differences between the two groups visually, we can plot a grouped boxplot:
+
+<div class = "input">
+```{r, comment = ""}
+boxplot(dat$amount_spent ~ dat$gender, xlab = 'Gender', ylab = 'Amount')
+```
+</div>
+
+We see that the two distributions are only slightly different. Based on this first descriptive and visual analysis, we suspect that a statistical test might find that there is no significant difference between the two groups. But let's see!
+
+### Null hypothesis
+
+First, let's again define the three possible questions we might want to ask:
+
+* Do the two groups have the same average amount spent on their last purchase? This corresponds to the null hypothesis $H_0: \mu_m = \mu_f$. The corresponding alternative hypothesis is $H_A: \mu_m \neq \mu_f$. As for the one-sample $t$-test, we will use the argument `alternative = "two.sided"` to compute this type of $t$-test.
+* Do men spend less on average than women? This corresponds to the null hypothesis $H_0: \mu_m \leq \mu_f$. The corresponding alternative hypothesis is $H_A: \mu_m > \mu_f$. For this test, we will set `alternative = "greater"`.
+* Do men spend more on average than women? This corresponds to the null hypothesis $H_0: \mu_m \geq \mu_f$. The corresponding alternative hypothesis is $H_A: \mu_m < \mu_f$. For this test, we will set `alternative = "less"`.
+
+Next, let's check the assumptions of the two-sample $t$-test.
+
+### Assumptions
+
+First of all, the two-sample $t$-test that we consider here assumes that the two samples (50 men and 50 women) are independent. Here, we simply assume that this is satisfied.
+
+Secondly, as for the one-sample $t$-test, there is the assumption that the two samples are *both* normally distributed. We could again check that visually with the QQ-plot. However, a safer way is to compute the Shapiro-Wilk test for normality. The null hypothesis for the Shapiro-Wilk test is $H_0: \textrm{Data are normally distributed}$. For this test, we can use the function `with()` that creates a separate environment based on the dataframe `dat`. This allows us to refer to the columns directly without always specifying `dat$...`.
+
+<div class = "input">
+```{r, comment = ""}
+# Shapiro-Wilk test for men
+with(dat, shapiro.test(amount_spent[gender == "m"]))
+```
+</div>
+
+<div class = "input">
+```{r, comment = ""}
+# Shapiro-Wilk test for women
+with(dat, shapiro.test(amount_spent[gender == "f"]))
+```
+</div>
+
+We see that the null hypothesis cannot be rejected for both samples as the p-value is larger than the typical significance level of $\alpha=0.05$. Hence, we conclude that the two samples are normally distributed.
+
+Finally, we need to check whether the two groups have the same variance or not. For this, we can use a F-test. The null hypothesis of this test states that the variances in the two groups are equal, i.e., $H_0: \sigma^2_m=\sigma^2_f$. Let's see how we compute this test in R:
+
+<div class = "input">
+```{r, comment = ""}
+# F-test to check whether variances are equal or not
+var.test(amount_spent ~ gender, data = dat)
+```
+</div>
+
+Since the p-value is clearly larger than the significance level ($\alpha=0.05$), we cannot reject the null hypothesis. We thus conclude that the variances in the two groups are equal. This is important as we will have to specify that in the `t.test()` function for two-sample $t$-tests with the `var.equal = TRUE` argument.
+
+### Two-sample $t$-test in R
+
+We are now ready to compute the two-sample $t$-test in R. We will use the same function `t.test()` as for the one-sample test but it will need to be specified a bit differently. With our dataframe, it is easiest to specify the test with a formula object. In our example, the formula object will take the form `amount_spent ~ gender`. We have already used this formula object above for the F-test.
+
+<div class = "input">
+```{r, eval = FALSE}
+t.test(formula, alternative = "two.sided", var.equal = FALSE)
+```
+</div>
+
+Alternatively, if the values for the two samples are stored in two different vectors, e.g., `x <- c(2,5,10)` and `y <- c(4,7,9)`, we can specify the two-sample $t$-test as follows:
+
+<div class = "input">
+```{r, eval = FALSE}
+t.test(x, y, alternative = "two.sided", var.equal = FALSE)
+```
+</div>
+
+Compared to the one-sample $t$-test we have one new argument: `var.equal = FALSE`. This argument is set to `FALSE` by default. But we have seen that in our example, the variances are actually equal, so we will have to set this argument to `TRUE`. Moreover, we can specify the dataframe with the argument `data` so that R knows where it can find the variables in the formula.
+
+We should now be ready to run the test. We will test the null hypothesis $H_0: \mu_m = \mu_f$.
+
+<div class = "input">
+```{r, comment = ""}
+# compute the test
+out <- t.test(amount_spent ~ gender, alternative = "two.sided", var.equal = TRUE, data = dat)
+# show the results
+out
+```
+</div>
+
+The value of the computed test statistic is $-0.3023$ and the corresponding p-value is $0.7631$. Therefore, we cannot reject the null hypothesis that the two samples have the same mean. This confirms our intuition from above. There seems to be no significant difference between men and women.
+
+### Alternative test
+
+If one or both samples are not normally distributed, we can compute the two-sample Wilcox test. The three null hypotheses (and corresponding alternative hypotheses) are the same as for the two-sample $t$-test.
+
+The code looks as follows:
+
+<div class = "input">
+```{r, eval = FALSE}
+wilcox.test(formula, alternative = "two.sided", data)
+```
+</div>
+
+### Your turn
+
+Try to compute the two-sample $t$-test for the following null hypothesis: $H_0: \mu_m \geq \mu_f$.
+
+```{r, "t-test3", exercise = TRUE}
+# Compute two-sample t-test for H0: men >= women
+
+```
+
+```{r "t-test3-solution"}
+# Compute two-sample t-test for H0: men >= women
+t.test(amount_spent ~ gender, alternative = "less", var.equal = TRUE, data = dat)
+```
+
+Perform the two-sample Wilcox test instead of the $t$-test for the null hypothesis $H_0: \mu_m = \mu_f$
+
+```{r, "t-test4", exercise = TRUE}
+# Instead of the t-test, compute the Wilcoxon test
+
+```
+
+```{r "t-test4-solution"}
+# Instead of the t-test, compute the Wilcoxon test
+wilcox.test(amount_spent ~ gender, alternative = "two.sided", data = dat)
+```
+
+### Quiz
+
+```{r, "t-test_mc3", echo = FALSE}
+question("Which of the following statements are correct? (select ALL that apply)",
+  answer("For the two-sample t-test, both samples need to be normally distributed.", correct = TRUE),
+  answer("The one-sample and two-sample t-test have the same null hypotheses."),
+  answer("For the two-sample distribution, it does not matter if one observation is in both samples."),
+  answer("We test the normality assumption with the Shapiro-Wilk test.", correct = TRUE),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
+)
+```
+
+```{r, "t-test_mc4", echo = FALSE}
+question("We run the following code: `t.test(x, y, alternative = 'greater', var.equal = FALSE)`. What is the corresponding null hypothesis?",
+  answer("$H_0: \\mu_x = \\mu_y$"),
+  answer("This test has no null hypothesis."),
+  answer("$H_0: \\mu_x \\leq \\mu_y$", correct = TRUE),
+  answer("$H_0: \\mu_x \\geq \\mu_y$"),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
+)
+```
