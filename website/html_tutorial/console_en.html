@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- FHNW Styleguide CSS -->
+	<link rel="stylesheet" href="/css/fhnw-1.1.0.min.css">
+
+	<title>leaRn</title>
+
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script type="text/javascript" src="/js/jquery-3.5.1.min.js"></script>
+	<script type="text/javascript" src="/js/popper-1-14-7.min.js"></script>
+	<!-- TS: July 30, 2020: I tried popper v2, but cards cannot be opened... -->
+	<script type="text/javascript" src="/js/bootstrap-4-5-0.min.js"></script>
+	<script type="text/javascript" src="/js/javascript.util-0-12-12.min.js"></script>
+	<script type="text/javascript" src="/js/select2-4-0-13.min.js"></script>
+	<script type="text/javascript" src="/js/styleguide-customs.js"></script>
+
+	<script>
+		<!-- script use to impute the navbar navigation -->
+
+		<!-- insert navbar -->
+			$(function(){
+			$("#nav-placeholder").load("navigation.html");
+		});
+
+		<!-- insert footer -->
+			$(function(){
+			$("#footer-placeholder").load("footerEN.html");
+		});
+	</script>
+</head>
+
+<body>
+	<div id="nav-placeholder"></div>
+	<!-- CONTENT  -->
+	<div class="container mt-5 pb-5">
+		<h1>Unit 1.2 Console</h1>
+		<br>
+		<h2>The console</h2>
+		<p>The R statistical software is operated by the <b>R console</b>. The console is a <b>command-line interface</b> which executes the commands we type in. Only a very limited number of actions or commands can be chosen from the menu bar.</p>
+		<p>Watch this <a href="https://www.youtube.com/embed/nrMekWkgi3g" target="_blank" style="color:blue">video</a> to learn more.</p>
+
+		<h2>Wrap up</h2>
+		<h4>Clear the console</h4>
+		<p>We can clear the console by pressing <kbd>ctrl</kbd> + <kbd>L<kbd></p>
+
+		<h4>Working with scripts</h4>
+		<p>First, we select/highlight the line (or lines) of code we want to execute in the R Editor. Second, we use the shortcut <kbd>ctrl</kbd> + <kbd>R</kbd> (the "R" stands for "run") to execute or run the selected commands.
+		<p><i>Alternative.</i> Having highlighted the commands, we can execute them by right-clicking with the mouse on the highlighted code and then choosing "run".</p> 
+
+		<h4>Saving the workspace</h4>
+		<p>The workspace is our current R working environment and it includes any data we generate or load. At the end of an R session, we can save the workspace (in addition to the R scripts) but this is not mandatory. Though, it can be useful to save the workspace if we have a lot data.</p>   
+
+		<h4>Working directory <span class="badge badge-primary">New</span></h4>
+		<p>We haven't yet covered the notion of a "working directory". But now, we are going to address this. The notions "workspace" and "working directory" are quite often mixed up by beginning R users. Let's shed some light on it.</p> 
+		<p>
+			Any application or app on your computer has its "working directory". It is the location where the app "wants" to store the files. In R, this is where R will look for data and scripts you ask it to load. It is also where any files you write to disk will go.
+			<ul>
+				<li>Lisa's main computer is a <b>Windows computer</b>. On her main computer, the "working directory" is her  "Documents" folder which is located on the disk at <code>C:\Users\lisa\Documents</code> (on the German edition of Windows, we have <code>Benutzer</code> and <code>Dokumente</code> in place of <code>users</code> and <code>Documents</code>). <i>Where is my "working directory"?</i> Unless you haven't screwed up your R installation, the working directory on your Windows computer will also be the "Documents" folder.</li>  
+
+				<li>
+					Lisa also has an <b>Apple Mac</b> computer. On her Apple Mac computer, the "working directory" is Lisa's <code>home</code> folder; her home folder has the name <code>LISA</code>. On your Apple Mac, you can use the shortcut <kbd>⇧</kbd> + <kbd>&#8984;</kbd> + <kbd>H</kbd> to get straight to the home folder with the finder (Note: the <kbd>⇧</kbd> key is the shift key not the arrow key).
+				</li>
+			</ul>
+		</p>
+		<p><i>How are the workspace and the working directory related?</i> The working directory is the physical location on the disk where R wants to save the workspace to (and from where it loads the workspace). Experienced R users can move the working directory to another place on the disk, on another computer or into the cloud. However, we recommend to stick with the default location.</p>
+
+		<br>
+
+		<h2>What more do you need to know?</h2>
+
+		<h4>Stop/ interrupt R <span class="badge badge-primary">New</span></h4>
+		<p>We can stop the execution (any time) by pressing <kbd>esc</kbd>. This can be useful if "something" goes wrong, e.g. when we have a typo in our commands.</p>
+
+		<br>
+		<h4>A line that starts with a plus ("+") <span class="badge badge-primary">New</span></h4>
+		<p>Suppose we want to compute <code style="color:black;">2 + 3 * 4</code>. However, in a hurry we type <code style="color:black;">2 + 3 *</code> and mistakenly press <kbd>enter</kbd> then the console looks like this</p>
+		<pre style="background:cornsilk;"><b><code style="color:red;"> &gt 2 + 3 *
+ +</code></b></pre>
+		<p> This command is incomplete. The <b><code>+</code></b> indicates that R is expecting that we finish the command. We can either type 4 to complete our calculation and press <kbd>enter</kbd> or we stop the computation with  <kbd>esc</kbd> (and re-do the calculation properly).</p>  
+
+		<br>
+		<h4>Error <span class="badge badge-primary">New</span></h4>
+		<p>Errors happen all the time. For instance, in the following code snipped, we erroneously type <code style="color:red;">x</code> although <code style="color:red;">x</code> is not defined. Therefore, R tells us that there is no <code>x</code>. Note that the cursor (below the error message) is waiting for us to continue typing in commands.</p>
+		<pre style="background:cornsilk;"><b><code style="color:red;"> &gt x</code></b>
+<b><code style="color:blue;"> Error: Object 'x' not found</code></b>
+<b><code style="color:red;"> &gt</code></b></pre>
+
+		<br>
+		<h4>Recall previous commands <span class="badge badge-primary">New</span></h4>
+		<p>
+			As you work with R you'll often want to re-execute a command which you previously entered. The R console supports the ability to recall previous commands using the arrow keys.
+			<ul>
+				<li><b>Up</b> — Recall previous command(s) with the arrow key <kbd>&#8593;</kbd></li>
+				<li><b>Down</b> — Reverse of Up with the arrow key <kbd>&#8595;</kbd></li>
+			</ul>
+		</p>
+
+		<br>
+		<br>
+
+		<h1>The Help system</h1>
+		R has a help system which describes the commands. We can access the help system directly from the console. Suppose we want to learn more on the command "median". To access the help system we type <b><code style="color:red;">?median</code></b>. Then, R opens the help files on "median" in the webbrowser. So, all we have to do is put a <b><code style="color:red;">?</code></b> (question mark) in front of the command we are interested in. 
+
+	</div> <!-- end container -->
+	<div id="footer-placeholder"></div>
+</body>
+</html>
