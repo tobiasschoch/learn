@@ -1,0 +1,9 @@
+#!/usr/bin/expect
+set tutorial [lindex $argv 0]
+spawn sudo /usr/bin/R -q
+expect ">"
+send "rmarkdown::run('$tutorial.Rmd')\r"
+expect "Listening on"
+send \x03
+expect ">"
+send "quit(save='no')\r"
